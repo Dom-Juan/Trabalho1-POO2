@@ -11,9 +11,9 @@
 
 ### Imóveis:
 	-	Imóveis				-> Completo ✔️
-	-	Apartamento 		-> Completo ✔️
-	-	Comercio	  		-> Fazer ✖️
-	-	Casa		 		-> Fazer ✖️
+	-	Apartamento 			-> Completo ✔️
+	-	Comercio	  		-> Completo ✔️
+	-	Casa		 		-> Completo ✔️
 
 ### Pagamentos:
 	-	Seguro		-> Fazer ✖️
