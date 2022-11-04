@@ -101,6 +101,10 @@ def main_window(name):
       u = create_broker()
       print(f"Main loop, ", u)
       user_list.append(u)
+    if event == "Criar Apartamento":
+      ap = create_apartment()
+      print(f"Main loop, ", ap)
+      property_list.append(ap)
     # Lógica de mostrar info dos objetos.
     if event == "Mostrar todos Clientes":
       print_info(UserClient, user_list)
@@ -280,6 +284,10 @@ def create_apartment() -> object:
     [sg.Text('Quantidade Banheiros', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
     [sg.Text('Vagas na garagem', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
     [sg.Text('IPTU', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Valor da venda', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Valor do aluguel', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Andar do AP', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Valor do condomínio', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
     [sg.Button('Criar', pad=(5, 5), size=(20, 1), button_color=('white', 'green4'))]
   ]
   window = sg.Window("Criar cliente", layout, element_justification='c', resizable=True, margins=(5, 5))
@@ -297,6 +305,11 @@ def create_apartment() -> object:
         values[5],
         values[6],
         values[7],
+        values[8],
+        values[9],
+        values[10],
+        values[11],
+        values[12]
       )
       result_window('Operação feita com sucesso')
       print(f"GUI loop, ", type(user))
