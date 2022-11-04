@@ -49,7 +49,7 @@ class Comercial(Property):
     pass
 
   def rent_value(self):
-    self.property_rent = self.property_worth * 0.45
+    self.property_rent = (self.property_worth * 0.45) + self.federal_tax
     return self.property_rent
 
   def save_json_file(self) -> str:
@@ -62,7 +62,7 @@ class Comercial(Property):
       listObj = json.load(fp)
     print(listObj)
     for item in listObj:
-      if (item['property_code'] == self.property_code):
+      if item['property_code'] == self.property_code:
         print("propriedade já existe!")
         listObj.remove(item)
     print(type(listObj))

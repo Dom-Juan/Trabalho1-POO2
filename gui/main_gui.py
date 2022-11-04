@@ -28,7 +28,13 @@ def result_window(text) -> None:
 def main_window(name):
   sg.set_options(font=("Cascadia Code", 12))
   sg.theme('DarkAmber')
-  col_create = [
+  Col = [
+    [
+      sg.Text('Operações básicas.', justification="center")
+    ],
+    [
+      sg.HSeparator()
+    ],
     [
       sg.Text('Registar dados: ', size=(20, 2)),
       sg.Button('Criar Cliente', size=(25, 2)),
@@ -37,8 +43,6 @@ def main_window(name):
       sg.Button('Criar Casa', size=(25, 2)),
       sg.Button('Criar Comercio', size=(25, 2)),
     ],
-  ]
-  col_show = [
     [
       sg.Text('Mostrar dados: ', size=(20, 1)),
       sg.Button('Mostrar todos Clientes', size=(25, 2)),
@@ -47,40 +51,51 @@ def main_window(name):
       sg.Button('Mostar todas as Casas', size=(25, 2), key='-ALLPROPERTYHOME-'),
       sg.Button('Mostar todos os Apartamentos', size=(25, 2), key='-ALLPROPERTYAPARTMENT-'),
       sg.Button('Mostar todos os Comércios', size=(25, 2), key='-ALLPROPERTYCOMERCIAL-'),
-    ]
-  ]
-  col_load = [
+    ],
     [
       sg.Text('Carregar dados: ', size=(20, 2)),
       sg.Button('Carregar arquivo usuários', size=(25, 2)),
       sg.Button('Carregar arquivo imoveis', size=(25, 2)),
-    ]
-  ]
-  col_save = [
+      sg.Button('Carregar arquivo pagamento', size=(25, 2)),
+      sg.Button('Carregar arquivo seguro', size=(25, 2)),
+      sg.Button('Carregar arquivo aluguel', size=(25, 2)),
+      sg.Button('Carregar arquivo imob.', size=(25, 2)),
+      sg.Button('Carregar arquivo venda', size=(25, 2)),
+    ],
     [
       sg.Text('Salvar dados: ', size=(20, 2)),
       sg.Button('Salvar arquivo usuários', size=(25, 2)),
-      sg.Button('Salvar arquivo imoveis', size=(25, 2), key='-SAVEALLPROPERTY-')
+      sg.Button('Salvar arquivo imoveis', size=(25, 2), key='-SAVEALLPROPERTY-'),
+      sg.Button('Salvar arquivo pagamento', size=(25, 2)),
+      sg.Button('Salvar arquivo seguro', size=(25, 2)),
+      sg.Button('Salvar arquivo aluguel', size=(25, 2)),
+      sg.Button('Salvar arquivo imob.', size=(25, 2)),
+      sg.Button('Salvar arquivo venda', size=(25, 2)),
+    ],
+    [
+      sg.HSeparator()
+    ],
+    [
+      sg.Text('Operações pedidas.')
+    ],
+    [
+      sg.Text('[TODO...]')
+    ],
+    [
+      sg.HSeparator()
+    ],
+    [
+      sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))
     ]
   ]
   layout = [
     [
-      sg.Column(col_create),
-    ],
-    [
-      sg.Column(col_show),
-    ],
-    [
-      sg.Column(col_load)
-    ],
-    [
-      sg.Column(col_save),
-    ],
-    [sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))]
+      sg.Column(Col, scrollable=True,  justification="right", pad=(0, 0), size=(1280, 720)),
+    ]
   ]
   layout2 = []  # layout da janela
   # Configurações da página.
-  window = sg.Window(name, layout, size=(1768, 720), resizable=True, margins=(5, 5), finalize=True)
+  window = sg.Window(name, layout, size=(1280, 720), resizable=True, margins=(0, 0), finalize=True)
   # Array de objetos instanciados.
   user_list: list = list()
   property_list: list = list()

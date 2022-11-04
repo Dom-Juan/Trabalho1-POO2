@@ -147,7 +147,7 @@ class UserBroker(User, ABC):
       listObj = json.load(fp)
     print(listObj)
     for item in listObj:
-      if(item['user_code']  == self.get_user_code()):
+      if item['user_code']  == self.get_user_code():
         print("usuario já existe")
         listObj.remove(item)
     print(type(listObj))

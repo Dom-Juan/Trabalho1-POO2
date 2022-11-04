@@ -1,6 +1,7 @@
 import random
 
-class Property():
+
+class Property:
   def __init__(self,
                address: str,
                construction_date: str,

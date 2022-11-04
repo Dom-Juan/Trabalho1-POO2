@@ -55,7 +55,7 @@ class ResidentialApartment(Property):
       listObj = json.load(fp)
     print(listObj)
     for item in listObj:
-      if (item['property_code'] == self.property_code):
+      if item['property_code'] == self.property_code:
         print("propriedade já existe!")
         listObj.remove(item)
     print(type(listObj))
