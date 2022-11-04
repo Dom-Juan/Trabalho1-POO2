@@ -3,7 +3,7 @@ import uuid
 
 class Payment:
   def __init__(self, payment_type: str):
-    self._payment_code: int = uuid.uuid2().int
+    self.__insurance_code: int = uuid.uuid1().int
     self._payment_type: str = payment_type
     pass
 

@@ -1,9 +1,13 @@
 import PySimpleGUI as sg
 import sys
 
-from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house
+from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
+  create_insurance
 from gui.gui_load_obj import load_file_gui_property, load_file_gui_users
-from gui.gui_show_obj import print_info, show_property, show_users, show_all_property
+from gui.gui_show_obj import print_info, show_all_insurance, show_ap_property, show_comercial_property, \
+  show_home_property, show_property, \
+  show_users, \
+  show_all_property
 
 # import de classes
 sys.path.append('../')
@@ -36,7 +40,6 @@ def main_window(name):
       sg.HSeparator()
     ],
     [
-      sg.Text('Registar dados: ', size=(20, 2)),
       sg.Button('Criar Cliente', size=(25, 2)),
       sg.Button('Criar Corretor', size=(25, 2)),
       sg.Button('Criar Apartamento', size=(25, 2)),
@@ -44,30 +47,66 @@ def main_window(name):
       sg.Button('Criar Comercio', size=(25, 2)),
     ],
     [
-      sg.Text('Mostrar dados: ', size=(20, 1)),
       sg.Button('Mostrar todos Clientes', size=(25, 2)),
       sg.Button('Mostar todos Corretores', size=(25, 2)),
-      sg.Button('Mostar todos Imóveis', size=(25, 2), key='-ALLPROPERTY-'),
       sg.Button('Mostar todas as Casas', size=(25, 2), key='-ALLPROPERTYHOME-'),
       sg.Button('Mostar todos os Apartamentos', size=(25, 2), key='-ALLPROPERTYAPARTMENT-'),
       sg.Button('Mostar todos os Comércios', size=(25, 2), key='-ALLPROPERTYCOMERCIAL-'),
     ],
     [
-      sg.Text('Carregar dados: ', size=(20, 2)),
       sg.Button('Carregar arquivo usuários', size=(25, 2)),
       sg.Button('Carregar arquivo imoveis', size=(25, 2)),
-      sg.Button('Carregar arquivo pagamento', size=(25, 2)),
+    ],
+    [
+      sg.Button('Salvar arquivo usuários', size=(25, 2)),
+      sg.Button('Salvar arquivo imoveis', size=(25, 2), key='-SAVEALLPROPERTY-'),
+    ],
+    [
+      sg.HSeparator()
+    ],
+    [
+      sg.Text('Operações básicas 2.')
+    ],
+    [
+      sg.Button('Criar Seguro', size=(25, 2)),
+      sg.Button('Criar Pagamento Dinheiro', size=(25, 2)),
+      sg.Button('Criar Pagamento Cartão', size=(25, 2))
+    ],
+    [
+      sg.Button('Mostar Seguros', size=(25, 2)),
+      sg.Button('Mostar todos os Dinheiro', size=(25, 2)),
+      sg.Button('Mostar todos os Cartão', size=(25, 2)),
+    ],
+    [
       sg.Button('Carregar arquivo seguro', size=(25, 2)),
+      sg.Button('Carregar arquivo pagamento', size=(25, 2)),
+    ],
+    [
+      sg.Button('Salvar arquivo seguro', size=(25, 2), key='-SAVEALLINSURANCE-'),
+      sg.Button('Salvar arquivo pagamento', size=(25, 2)),
+    ],
+    [
+      sg.HSeparator()
+    ],
+    [
+      sg.Text('Operações básicas 3.')
+    ],
+    [
+      sg.Button('Criar Imobiliaria', size=(25, 2)),
+      sg.Button('Criar Aluguel', size=(25, 2)),
+      sg.Button('Criar Venda', size=(25, 2)),
+    ],
+    [
+      sg.Button('Mostar todos as imob.', size=(25, 2), key='-ALLPROPERTYCOMERCIAL-'),
+      sg.Button('Mostar todos os alugueis', size=(25, 2), key='-ALLPROPERTYCOMERCIAL-'),
+      sg.Button('Mostar todos as vendas', size=(25, 2), key='-ALLPROPERTYCOMERCIAL-'),
+    ],
+    [
       sg.Button('Carregar arquivo aluguel', size=(25, 2)),
       sg.Button('Carregar arquivo imob.', size=(25, 2)),
       sg.Button('Carregar arquivo venda', size=(25, 2)),
     ],
     [
-      sg.Text('Salvar dados: ', size=(20, 2)),
-      sg.Button('Salvar arquivo usuários', size=(25, 2)),
-      sg.Button('Salvar arquivo imoveis', size=(25, 2), key='-SAVEALLPROPERTY-'),
-      sg.Button('Salvar arquivo pagamento', size=(25, 2)),
-      sg.Button('Salvar arquivo seguro', size=(25, 2)),
       sg.Button('Salvar arquivo aluguel', size=(25, 2)),
       sg.Button('Salvar arquivo imob.', size=(25, 2)),
       sg.Button('Salvar arquivo venda', size=(25, 2)),
@@ -76,13 +115,16 @@ def main_window(name):
       sg.HSeparator()
     ],
     [
-      sg.Text('Operações pedidas.')
+      sg.Text('Operações Pedidas no PDF.')
     ],
     [
-      sg.Text('[TODO...]')
+      sg.Button('Mostar todos Imóveis', size=(25, 2), key='-ALLPROPERTY-'),
     ],
     [
       sg.HSeparator()
+    ],
+    [
+      sg.Button('Botão da Sara', size=(15, 1), button_color=('white', 'green4'))
     ],
     [
       sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))
@@ -99,6 +141,7 @@ def main_window(name):
   # Array de objetos instanciados.
   user_list: list = list()
   property_list: list = list()
+  insurance_list: list = list()
   # Objetos instanciados com Null para receberem os ponteiros depois.
   obj: object = None
   while True:
@@ -106,40 +149,53 @@ def main_window(name):
     layout2.append([sg.Text('Resultado'), values])
     if event in [sg.WIN_CLOSED, 'Sair']:
       break
+    if event == "Botão da Sara":
+      janela = 1 # colocar a função da janela em que sera editada.
     # Lógica de criação dos objetos.
     if event == "Criar Cliente":
       obj = create_client()
       print(f"Main loop, ", obj)
-      user_list.append(obj)
+      if obj is not None:
+        user_list.append(obj)
     if event == "Criar Corretor":
       obj = create_broker()
       print(f"Main loop, ", obj)
-      user_list.append(obj)
+      if obj is not None:
+        user_list.append(obj)
     if event == "Criar Casa":
       obj = create_house()
       print(f"Main loop, ", obj)
-      property_list.append(obj)
+      if obj is not None:
+        property_list.append(obj)
     if event == "Criar Apartamento":
       obj = create_apartment()
       print(f"Main loop, ", obj)
-      property_list.append(obj)
+      if obj is not None:
+        property_list.append(obj)
     if event == "Criar Comercio":
       obj = create_comercial()
       print(f"Main loop, ", obj)
-      property_list.append(obj)
+      if obj is not None:
+        property_list.append(obj)
+    if event == "Criar Seguro":
+      obj = create_insurance()
+      if obj is not None:
+        insurance_list.append(obj)
     # Lógica de mostrar info dos objetos.
     if event == "Mostrar todos Clientes":
       show_users(user_list, "clientes")
     if event == "Mostar todos Corretores":
-      print_info(UserBroker, user_list)
+      show_users(user_list, "corretores")
     if event in ['Mostar todos os Imóveis', '-ALLPROPERTY-']:
       show_all_property(property_list)
     if event in ['Mostar todos as Casas', '-ALLPROPERTYHOME-']:
-      show_property(property_list, "h")
+      show_home_property(property_list)
     if event in ['Mostar todos os Apartamentos', '-ALLPROPERTYAPARTMENT-']:
-      show_property(property_list, "ap")
+      show_ap_property(property_list)
     if event in ['Mostar todos os Comércios', '-ALLPROPERTYCOMERCIAL-']:
-      show_property(property_list, "c")
+      show_comercial_property(property_list)
+    if event == "Mostar Seguros":
+      show_all_insurance(insurance_list)
     if event == "Carregar arquivo usuários":
       new_user_list: list = load_file_gui_users()
       if new_user_list != None:
@@ -157,7 +213,11 @@ def main_window(name):
         u.save_json_file()
       result_window('Arquivo salvo com sucesso!')
     if event in ["Salvar arquivo imoveis", '-SAVEALLPROPERTY-']:
-      for i in property_list:
+      for p in property_list:
+        p.save_json_file()
+      result_window('Arquivo salvo com sucesso!')
+    if event in ["Salvar arquivo seguro", '-SAVEALLINSURANCE-']:
+      for i in insurance_list:
         i.save_json_file()
       result_window('Arquivo salvo com sucesso!')
     obj = None

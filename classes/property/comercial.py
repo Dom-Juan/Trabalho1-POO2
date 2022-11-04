@@ -41,7 +41,7 @@ class Comercial(Property):
 
   @property
   def federal_tax(self):
-    return self.federal_tax
+    return self._federal_tax
 
   @federal_tax.setter
   def federal_tax(self, value):

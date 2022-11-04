@@ -1,6 +1,8 @@
 import PySimpleGUI as sg
 import sys
 
+from classes.money.insurance import Insurance
+
 # import de classes
 sys.path.append('../')
 from classes.user.user_client import UserClient
@@ -69,10 +71,60 @@ def create_user_from_file(listObj) -> list:
 # Imóvel
 def create_property_from_file(listObj) -> list:
   loaded_property_from_file: list = []
-  loaded_property: object = None
+  prop: object = None
+  print(listObj)
   for data in listObj:
-    data = 1
+    prop = None
+    if data["type"] == "residential_apartment":
+      prop = ResidentialApartment(
+        data["address"],
+        data["construction_date"],
+        data["total_area"],
+        data["constructed_area"],
+        data["num_rooms"],
+        data["num_bathrooms"],
+        data["num_spots_garage"],
+        float(data["iptu"]),
+        float(data["property_worth"]),
+        float(data["property_rent"]),
+        data["floor"],
+        float(data["apartment_value"]),
+      )
+      prop.property_code = data["property_code"]
+    elif data["type"] == "residential_home":
+      prop = ResidentialHome(
+        data["address"],
+        data["construction_date"],
+        data["total_area"],
+        data["constructed_area"],
+        data["num_rooms"],
+        data["num_bathrooms"],
+        data["num_spots_garage"],
+        float(data["iptu"]),
+        float(data["property_worth"]),
+        float(data["property_rent"]),
+      )
+      prop.property_code = data["property_code"]
+    elif data["type"] == "comercial":
+      prop = Comercial(
+        data["address"],
+        data["construction_date"],
+        data["total_area"],
+        data["constructed_area"],
+        data["num_rooms"],
+        data["num_bathrooms"],
+        data["num_spots_garage"],
+        data["iptu"],
+        float(data["property_worth"]),
+        float(data["property_rent"]),
+        float(data["federal_tax"])
+      )
+      prop.property_code = data["property_code"]
+    else:
+      print("> ERROR - TIPO NÃO IDENTIFICADO!")
+    loaded_property_from_file.append(prop)
   return loaded_property_from_file
+
 
 # Criar um cliente
 def create_client() -> object:
@@ -280,6 +332,37 @@ def create_comercial() -> object:
       result_window('Operação feita com sucesso')
       print(f"GUI loop, ", type(c))
       return c
+  window.close()
+
+
+# Criando um novo seguro.
+def create_insurance() -> object:
+  insurance: object = None
+  layout = [
+    [sg.Text('Nome seguradora', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Tipo', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Descrição', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Valor', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Button('Criar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
+  ]
+  window = sg.Window("Criar Seguro", layout, element_justification='c', resizable=True, margins=(5, 5))
+  while True:
+    event, values = window.read(close=True)
+    if '' in values or None in values:
+      result_window('Algum campo está vazio, tente novamente.')
+      break
+    if event in ["Exit", sg.WIN_CLOSED]:
+      break
+    if event == "Criar":
+      insurance = Insurance(
+        str(values[0]),
+        str(values[1]),
+        str(values[2]),
+        float(values[3]),
+      )
+      result_window('Operação feita com sucesso')
+      print(f"GUI loop, ", type(insurance))
+      return insurance
   window.close()
 
 # FIM Lógica de criação de objetos

@@ -5,7 +5,7 @@ from os import path
 
 class Insurance:
   def __init__(self, insurance_name: str, insurance_type: str, insurance_desc: str, insurance_value: float):
-    self.__insurance_code: int = uuid.uuid2().int
+    self.__insurance_code: int = uuid.uuid1().int
     self.__insurance_name: str = insurance_name
     self.__insurance_type: str = insurance_type
     self.__insurance_desc: str = insurance_desc
