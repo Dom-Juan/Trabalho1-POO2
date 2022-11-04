@@ -133,7 +133,7 @@ def show_users(user_list: list, type: str) -> None:
             )
       Col.append([sg.HSeparator()])
     layout = []
-    layout.append([sg.Column(Col, element_justification='c', scrollable=True, vertical_scroll_only=True)])
+    layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
     layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
     window = sg.Window("Mostrando Todos Clientes", layout, element_justification='c', resizable=True, finalize=True,
                        modal=True)
@@ -241,7 +241,7 @@ def show_property(property_list: list, type: str) -> None:
             ]
           )
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos Apartamentos", layout, element_justification='c', resizable=True, finalize=True,
                      modal=True)
@@ -350,7 +350,7 @@ def show_all_property(property_list):
           ]
         )
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos Apartamentos", layout, element_justification='c', resizable=True, finalize=True,
                      modal=True)
@@ -452,7 +452,7 @@ def show_ap_property(property_list):
           ]
         )
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos Apartamentos", layout, element_justification='c', resizable=True, finalize=True,
                      modal=True)
@@ -550,7 +550,7 @@ def show_comercial_property(property_list):
           ]
         )
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos Apartamentos", layout, element_justification='c', resizable=True, finalize=True,
                      modal=True)
@@ -639,7 +639,7 @@ def show_home_property(property_list):
       )
       Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos Apartamentos", layout, element_justification='c', resizable=True, finalize=True,
                      modal=True)
@@ -761,9 +761,9 @@ def show_all_property(property_list):
             sg.Text(str(prop.federal_tax), pad=(5, 5), size=(20, 1))
           ]
         )
+  Col.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, size=(640, 480), element_justification='c', scrollable=True)])
-  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True)])
   window = sg.Window("Mostrando Todos Apartamentos", layout, size=(640, 480), element_justification='c', resizable=True,
                      finalize=True, modal=True)
   window.TKroot.minsize(320, 240)
@@ -776,7 +776,6 @@ def show_all_property(property_list):
 def show_all_insurance(insurance_list: list):
   print(insurance_list)
   Col = []
-  Col.append([sg.Text('Mostrando informações')])
   for i in insurance_list:
     if i is not None:
       if isinstance(i, Insurance):
@@ -784,29 +783,30 @@ def show_all_insurance(insurance_list: list):
         Col.append([sg.HSeparator()])
         Col.append([
           sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
-          sg.Text(str(i.insurance_code), pad=(5, 5), size=(20, 1))  # Valor do obj.
+          sg.Text(str(i.insurance_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
         ])
         Col.append([
           sg.Text('Nome Seguradora:', pad=(5, 5), size=(20, 1)),  # Label
-          sg.Text(str(i.insurance_name), pad=(5, 5), size=(20, 1))  # Valor do obj.
+          sg.Text(str(i.insurance_name), pad=(5, 5), size=(45, 1))  # Valor do obj.
         ])
         Col.append([
           sg.Text('Tipo:', pad=(5, 5), size=(20, 1)),  # Label
-          sg.Text(str(i.insurance_type), pad=(5, 5), size=(20, 1))  # Valor do obj.
+          sg.Text(str(i.insurance_type), pad=(5, 5), size=(45, 1))  # Valor do obj.
         ])
         Col.append([
           sg.Text('Descrição:', pad=(5, 5), size=(20, 1)),  # Label
-          sg.Text(str(i.insurance_desc), pad=(5, 5), size=(20, 1))  # Valor do obj.
+          sg.Text(str(i.insurance_desc), pad=(5, 5), size=(45, 1))  # Valor do obj.
         ])
         Col.append([
           sg.Text('Preço:', pad=(5, 5), size=(20, 1)),  # Label
-          sg.Text(str(i.insurance_value), pad=(5, 5), size=(20, 1))  # Valor do obj.
+          sg.Text(str(i.insurance_value), pad=(5, 5), size=(45, 1))  # Valor do obj.
         ])
       Col.append([sg.HSeparator()])
   layout = []
-  layout.append([sg.Column(Col, element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
-  window = sg.Window("Mostrando Todos Clientes", layout, element_justification='c', resizable=True, finalize=True,
+  window = sg.Window("Mostrando Todos os Seguros", layout, element_justification='c', resizable=True, finalize=True,
                      modal=True)
   window.TKroot.minsize(320, 240)
   while True:

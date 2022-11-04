@@ -3,7 +3,7 @@ import sys
 
 from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
   create_insurance
-from gui.gui_load_obj import load_file_gui_property, load_file_gui_users
+from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_users
 from gui.gui_show_obj import print_info, show_all_insurance, show_ap_property, show_comercial_property, \
   show_home_property, show_property, \
   show_users, \
@@ -78,11 +78,11 @@ def main_window(name):
       sg.Button('Mostar todos os Cartão', size=(25, 2)),
     ],
     [
-      sg.Button('Carregar arquivo seguro', size=(25, 2)),
+      sg.Button('Carregar arquivo do seguro', size=(25, 2), key='-LOADALLINSURANCE-'),
       sg.Button('Carregar arquivo pagamento', size=(25, 2)),
     ],
     [
-      sg.Button('Salvar arquivo seguro', size=(25, 2), key='-SAVEALLINSURANCE-'),
+      sg.Button('Salvar arquivo do seguro', size=(25, 2), key='-SAVEALLINSURANCE-'),
       sg.Button('Salvar arquivo pagamento', size=(25, 2)),
     ],
     [
@@ -208,6 +208,12 @@ def main_window(name):
         for p in new_property_list[:]:
           property_list.append(p)
         result_window('Arquivo carregado com sucesso!')
+    if event in ['Carregar arquivo do seguro', '-LOADALLINSURANCE-']:
+      new_insurance_list: list = load_file_gui_insurance()
+      if new_insurance_list != None:
+        for i in new_insurance_list[:]:
+          insurance_list.append(i)
+        result_window('Arquivo carregado com sucesso!')
     if event == "Salvar arquivo usuários":
       for u in user_list:
         u.save_json_file()
@@ -216,7 +222,7 @@ def main_window(name):
       for p in property_list:
         p.save_json_file()
       result_window('Arquivo salvo com sucesso!')
-    if event in ["Salvar arquivo seguro", '-SAVEALLINSURANCE-']:
+    if event in ["Salvar arquivo do seguro", '-SAVEALLINSURANCE-']:
       for i in insurance_list:
         i.save_json_file()
       result_window('Arquivo salvo com sucesso!')

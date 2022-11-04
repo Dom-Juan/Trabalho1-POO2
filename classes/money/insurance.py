@@ -73,7 +73,7 @@ class Insurance:
     listObj.append({
       "type": "insurance",
       "insurance_code": self.insurance_code,
-      "insurance_name:": self.insurance_name,
+      "insurance_name": self.insurance_name,
       "insurance_type": self.insurance_type,
       "insurance_desc": self.insurance_desc,
       "insurance_value": self.insurance_value,

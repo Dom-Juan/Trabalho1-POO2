@@ -27,10 +27,10 @@ def result_window(text) -> None:
 
 # Lógica de criação de objetos
 # Cliente
-def create_user_from_file(listObj) -> list:
+def create_user_from_file(list_obj) -> list:
   loaded_users_from_file: list = []
   loaded_user: object = None
-  for data in listObj:
+  for data in list_obj:
     if (data['type'] == 'client'):
       loaded_user = UserClient(
         data['name'],
@@ -69,11 +69,11 @@ def create_user_from_file(listObj) -> list:
   return loaded_users_from_file
 
 # Imóvel
-def create_property_from_file(listObj) -> list:
+def create_property_from_file(list_obj) -> list:
   loaded_property_from_file: list = []
   prop: object = None
-  print(listObj)
-  for data in listObj:
+  print(list_obj)
+  for data in list_obj:
     prop = None
     if data["type"] == "residential_apartment":
       prop = ResidentialApartment(
@@ -126,6 +126,24 @@ def create_property_from_file(listObj) -> list:
   return loaded_property_from_file
 
 
+# Cria um seguro a partir de um arquivo JSON.
+def create_insurance_from_file(list_obj):
+  loaded_insurance_from_file: list = []
+  prop: object = None
+  print(list_obj)
+  for data in list_obj:
+    prop = Insurance(
+      str(data["insurance_name"]),
+      str(data["insurance_type"]),
+      str(data["insurance_desc"]),
+      float(data["insurance_value"]),
+    )
+    prop.property_code = int(data["insurance_code"])
+    loaded_insurance_from_file.append(prop)
+  return loaded_insurance_from_file
+
+
+# Criar pela interface
 # Criar um cliente
 def create_client() -> object:
   user: object = None
