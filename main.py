@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # import de interface
-from gui.gui import main_window
+from gui.main_gui import main_window
 
 
 def main():

@@ -10,7 +10,7 @@ sys.path.append('../')
 from classes.property.property import Property
 
 
-class ResidentialApartment(Property):
+class Comercial(Property):
   def __init__(
       self,
       address: str,
@@ -23,8 +23,9 @@ class ResidentialApartment(Property):
       iptu: float,
       property_worth: float,
       property_rent: float,
+      federal_tax: float
   ):
-    super(Property, self).__init__(
+    super().__init__(
       address,
       construction_date,
       total_area,
@@ -36,6 +37,16 @@ class ResidentialApartment(Property):
       property_worth,
       property_rent
     )
+    self._federal_tax = federal_tax
+
+  @property
+  def federal_tax(self):
+    return self.federal_tax
+
+  @federal_tax.setter
+  def federal_tax(self, value):
+    self._federal_tax = value
+    pass
 
   def rent_value(self):
     self.property_rent = self.property_worth * 0.45
@@ -68,6 +79,7 @@ class ResidentialApartment(Property):
       "iptu": self.iptu,
       "property_worth": self.property_worth,
       "property_rent": self.property_rent,
+      "federal_tax": self.federal_tax
     })
     # Verificando JSON atualizado
     print(listObj)
@@ -78,4 +90,3 @@ class ResidentialApartment(Property):
                 separators=(',', ': '),
                 ensure_ascii=True)
     return "> Arquivo JSON atualizado com sucesso!"
-z

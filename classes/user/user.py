@@ -10,7 +10,10 @@ class User(ABC):
     self._name: str = name,
     self._cpf: str = cpf
     self._rg: str = rg
-    self._anniversary_date: str = datetime.datetime.strptime(anniversary_date, '%d/%m/%Y').date().strftime('%d/%m/%Y')
+    if anniversary_date == (None or ''):
+      self._anniversary_date: any = None
+    else:
+      self._anniversary_date: str = datetime.datetime.strptime(anniversary_date, '%d/%m/%Y').date().strftime('%d/%m/%Y')
     self._address: str = address,
     self._cep: str = cep,
     self._phone: str = phone,

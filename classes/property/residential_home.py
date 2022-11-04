@@ -24,7 +24,7 @@ class ResidentialHome(Property):
       property_worth: float,
       property_rent: float,
   ):
-    super(Property, self).__init__(
+    super().__init__(
       address,
       construction_date,
       total_area,

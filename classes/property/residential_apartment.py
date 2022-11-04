@@ -12,31 +12,13 @@ from classes.property.property import Property
 
 class ResidentialApartment(Property):
   def __init__(
-      self,
-      address: str,
-      construction_date: str,
-      total_area: float,
-      constructed_area: float,
-      num_rooms: int,
-      num_bathrooms: int,
-      num_spots_garage: int,
-      iptu: float,
-      property_worth: float,
-      property_rent: float,
-      floor: int,
+      self, address: str, construction_date: str, total_area: float, constructed_area: float, num_rooms: int,
+      num_bathrooms: int, num_spots_garage: int, iptu: float, property_worth: float, property_rent: float, floor: int,
       apartment_value: float
   ):
-    super(Property, self).__init__(
-      address,
-      construction_date,
-      total_area,
-      constructed_area,
-      num_rooms,
-      num_bathrooms,
-      num_spots_garage,
-      iptu,
-      property_worth,
-      property_rent
+    super().__init__(
+      address, construction_date, total_area, constructed_area, num_rooms, num_bathrooms,
+      num_spots_garage, iptu, property_worth, property_rent
     )
     self._floor: int = floor
     self._apartment_value: float = apartment_value
@@ -102,3 +84,8 @@ class ResidentialApartment(Property):
                 separators=(',', ': '),
                 ensure_ascii=True)
     return "> Arquivo JSON atualizado com sucesso!"
+
+if __name__ == '__main__':
+  print("DEBUG")
+  ap = ResidentialApartment("AP TESTE", "06/06/1995", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+  print(ap)

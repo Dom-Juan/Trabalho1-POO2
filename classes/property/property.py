@@ -43,6 +43,15 @@ class Property():
     pass
 
   @property
+  def total_area(self):
+    return self._total_area
+
+  @total_area.setter
+  def total_area(self, value):
+    self._total_area = value
+    pass
+
+  @property
   def constructed_area(self):
     return self._constructed_area
 
@@ -53,7 +62,7 @@ class Property():
 
   @property
   def construction_date(self):
-      return self._constructed_date
+    return self._construction_date
 
   @construction_date.setter
   def construction_date(self, value):
@@ -67,6 +76,15 @@ class Property():
   @num_rooms.setter
   def num_rooms(self, value):
     self._num_rooms = value
+    pass
+
+  @property
+  def num_bathrooms(self):
+    return self._num_bathrooms
+
+  @num_bathrooms.setter
+  def num_bathrooms(self, value):
+    self._num_bathrooms = value
     pass
 
   @property

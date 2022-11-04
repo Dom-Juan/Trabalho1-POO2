@@ -1,5 +1,18 @@
 [
     {
-        "index": "0"
+        "type": "residential_apartment",
+        "property_code": 269,
+        "address": "Rua Felicio Alegria",
+        "construction_date": "06/09/2020",
+        "total_area": "500",
+        "constructed_area": "500",
+        "num_rooms": "1",
+        "num_bathrooms": "3",
+        "num_spots_garage": "2",
+        "iptu": "1500",
+        "property_worth": "150000",
+        "property_rent": "5000",
+        "floor": "3",
+        "apartment_value": "1000000"
     }
 ]
