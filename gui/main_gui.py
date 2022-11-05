@@ -1,13 +1,12 @@
 import PySimpleGUI as sg
 import sys
+import pyglet
 
 from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
-  create_insurance
+  create_insurance, create_payment_method_card, create_payment_method_money
 from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_users
-from gui.gui_show_obj import print_info, show_all_insurance, show_ap_property, show_comercial_property, \
-  show_home_property, show_property, \
-  show_users, \
-  show_all_property
+from gui.gui_show_obj import show_all_insurance, show_ap_property, show_comercial_property,\
+  show_home_property, show_all_property, show_users_broker, show_users_client
 
 # import de classes
 sys.path.append('../')
@@ -30,87 +29,11 @@ def result_window(text) -> None:
 
 # Janela principal.
 def main_window(name):
-  sg.set_options(font=("Cascadia Code", 12))
-  sg.theme('DarkAmber')
+  pyglet.font.add_file(r"./fonts/Roboto-Regular.ttf")
+  font1 = ("Roboto Regular", 12)
+  sg.set_options(font=font1)
+  sg.theme('SystemDefault')
   Col = [
-    [
-      sg.Text('Operações básicas.', justification="center")
-    ],
-    [
-      sg.HSeparator()
-    ],
-    [
-      sg.Button('Criar Cliente', size=(25, 2)),
-      sg.Button('Criar Corretor', size=(25, 2)),
-      sg.Button('Criar Apartamento', size=(25, 2)),
-      sg.Button('Criar Casa', size=(25, 2)),
-      sg.Button('Criar Comercio', size=(25, 2)),
-    ],
-    [
-      sg.Button('Mostrar todos Clientes', size=(25, 2)),
-      sg.Button('Mostar todos Corretores', size=(25, 2)),
-      sg.Button('Mostar todas as Casas', size=(25, 2), key='-ALLPROPERTYHOME-'),
-      sg.Button('Mostar todos os Apartamentos', size=(25, 2), key='-ALLPROPERTYAPARTMENT-'),
-      sg.Button('Mostar todos os Comércios', size=(25, 2), key='-ALLPROPERTYCOMERCIAL-'),
-    ],
-    [
-      sg.Button('Carregar arquivo usuários', size=(25, 2)),
-      sg.Button('Carregar arquivo imoveis', size=(25, 2)),
-    ],
-    [
-      sg.Button('Salvar arquivo usuários', size=(25, 2)),
-      sg.Button('Salvar arquivo imoveis', size=(25, 2), key='-SAVEALLPROPERTY-'),
-    ],
-    [
-      sg.HSeparator()
-    ],
-    [
-      sg.Text('Operações básicas 2.')
-    ],
-    [
-      sg.Button('Criar Seguro', size=(25, 2)),
-      sg.Button('Criar Pagamento Dinheiro', size=(25, 2)),
-      sg.Button('Criar Pagamento Cartão', size=(25, 2))
-    ],
-    [
-      sg.Button('Mostar Seguros', size=(25, 2)),
-      sg.Button('Mostar todos os Dinheiro', size=(25, 2)),
-      sg.Button('Mostar todos os Cartão', size=(25, 2)),
-    ],
-    [
-      sg.Button('Carregar arquivo do seguro', size=(25, 2), key='-LOADALLINSURANCE-'),
-      sg.Button('Carregar arquivo pagamento', size=(25, 2)),
-    ],
-    [
-      sg.Button('Salvar arquivo do seguro', size=(25, 2), key='-SAVEALLINSURANCE-'),
-      sg.Button('Salvar arquivo pagamento', size=(25, 2)),
-    ],
-    [
-      sg.HSeparator()
-    ],
-    [
-      sg.Text('Operações básicas 3.')
-    ],
-    [
-      sg.Button('Criar Imobiliaria', size=(25, 2)),
-      sg.Button('Criar Aluguel', size=(25, 2)),
-      sg.Button('Criar Venda', size=(25, 2)),
-    ],
-    [
-      sg.Button('Mostar todos as imob.', size=(25, 2), key='-ALLPROPERTYCOMERCIAL-'),
-      sg.Button('Mostar todos os alugueis', size=(25, 2), key='-ALLPROPERTYCOMERCIAL-'),
-      sg.Button('Mostar todos as vendas', size=(25, 2), key='-ALLPROPERTYCOMERCIAL-'),
-    ],
-    [
-      sg.Button('Carregar arquivo aluguel', size=(25, 2)),
-      sg.Button('Carregar arquivo imob.', size=(25, 2)),
-      sg.Button('Carregar arquivo venda', size=(25, 2)),
-    ],
-    [
-      sg.Button('Salvar arquivo aluguel', size=(25, 2)),
-      sg.Button('Salvar arquivo imob.', size=(25, 2)),
-      sg.Button('Salvar arquivo venda', size=(25, 2)),
-    ],
     [
       sg.HSeparator()
     ],
@@ -124,24 +47,105 @@ def main_window(name):
       sg.HSeparator()
     ],
     [
-      sg.Button('Botão da Sara', size=(15, 1), button_color=('white', 'green4'))
-    ],
-    [
       sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))
     ]
   ]
-  layout = [
+  layout = []
+  layout.append(
     [
-      sg.Column(Col, scrollable=True,  justification="right", pad=(0, 0), size=(1280, 720)),
+      sg.Menu(
+        [
+          [
+            '&Usuários',
+              [
+                'Criar Cliente',
+                'Criar Corretor',
+                'Mostrar todos Clientes',
+                'Mostar todos Corretores',
+                'Salvar arquivo usuários',
+                'Carregar arquivo usuários'
+              ],
+          ],
+          [
+            '&Imóveis',
+            [
+              'Criar Apartamento',
+              'Criar Casa',
+              'Criar Comercio',
+              'Mostar todos as Casas',
+              'Mostar todos os Apartamentos',
+              'Mostar todos os Comércios',
+              'Salvar arquivo imoveis',
+              'Carregar arquivo imoveis'
+            ]
+          ],
+          [
+            '&Seguro',
+            [
+              'Criar Seguro',
+              'Mostar Seguros',
+              'Salvar arquivo do seguro',
+              'Carregar arquivo do seguro'
+            ]
+          ],
+          [
+            '&Métodos de Pagamentos',
+            [
+              'Criar Pagamento Dinheiro',
+              'Criar Pagamento Cartão',
+              'Mostar todos pagamentos com Dinheiro',
+              'Mostar todos pagamentos com Cartão',
+              'Carregar arquivo pagamento',
+              'Salvar arquivo pagamento'
+            ]
+          ],
+          [
+            '&Imobiliária',
+            [
+              'Criar Imobiliaria',
+              'Mostar todos as imob.',
+              'Salvar arquivo imob.'
+              'Carregar arquivo imob.'
+            ]
+          ],
+          [
+            '&Alugéis',
+            [
+              'Criar Aluguel',
+              'Mostar todos os alugueis',
+              'Salvar arquivo aluguel',
+              'Carregar arquivo aluguel'
+            ]
+          ],
+          [
+            '&Vendas',
+            [
+              'Criar Venda',
+              'Mostar todos as vendas',
+              'Salvar arquivo venda',
+              'Carregar arquivo venda'
+            ]
+          ]
+        ],
+        font=('Cascadia Code', 12),
+        tearoff=False,
+        pad=(200, 5),
+      )
     ]
-  ]
+  )
+  layout.append(
+    [
+      sg.Column(Col, scrollable=True,  justification="right", pad=(0, 0), size=(1280, 720))
+    ]
+  )
   layout2 = []  # layout da janela
   # Configurações da página.
-  window = sg.Window(name, layout, size=(1280, 720), resizable=True, margins=(0, 0), finalize=True)
+  window = sg.Window(name, layout, size=(1280, 720), resizable=True, enable_close_attempted_event=True, finalize=True)
   # Array de objetos instanciados.
   user_list: list = list()
   property_list: list = list()
   insurance_list: list = list()
+  payment_list: list = list()
   # Objetos instanciados com Null para receberem os ponteiros depois.
   obj: object = None
   while True:
@@ -181,14 +185,22 @@ def main_window(name):
       obj = create_insurance()
       if obj is not None:
         insurance_list.append(obj)
+    if event == "Criar Pagamento Dinheiro":
+      obj = create_payment_method_money()
+      if obj is not None:
+        payment_list.append(obj)
+    if event == "Criar Pagamento Cartão":
+      obj = create_payment_method_card()
+      if obj is not None:
+        payment_list.append(obj)
     # Lógica de mostrar info dos objetos.
     if event == "Mostrar todos Clientes":
-      show_users(user_list, "clientes")
+      show_users_client(user_list)
     if event == "Mostar todos Corretores":
-      show_users(user_list, "corretores")
+      show_users_broker(user_list)
     if event in ['Mostar todos os Imóveis', '-ALLPROPERTY-']:
       show_all_property(property_list)
-    if event in ['Mostar todos as Casas', '-ALLPROPERTYHOME-']:
+    if event == 'Mostar todos as Casas':
       show_home_property(property_list)
     if event in ['Mostar todos os Apartamentos', '-ALLPROPERTYAPARTMENT-']:
       show_ap_property(property_list)
@@ -196,6 +208,7 @@ def main_window(name):
       show_comercial_property(property_list)
     if event == "Mostar Seguros":
       show_all_insurance(insurance_list)
+    # Lógicas de carregar arquivos.
     if event == "Carregar arquivo usuários":
       new_user_list: list = load_file_gui_users()
       if new_user_list != None:
@@ -214,6 +227,7 @@ def main_window(name):
         for i in new_insurance_list[:]:
           insurance_list.append(i)
         result_window('Arquivo carregado com sucesso!')
+    # Lógicas de salvar arquivos.
     if event == "Salvar arquivo usuários":
       for u in user_list:
         u.save_json_file()

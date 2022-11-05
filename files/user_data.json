@@ -2,60 +2,30 @@
     {
         "type": "client",
         "user_code": 3964,
-        "name": [
-            [
-                "a"
-            ]
-        ],
+        "name": "a",
         "cpf": "a",
         "rg": "a",
         "anniversary_date": "06/06/1998",
-        "address": [
-            [
-                "a"
-            ]
-        ],
-        "cep": [
-            [
-                "a"
-            ]
-        ],
-        "phone": [
-            [
-                "a"
-            ]
-        ],
-        "email": [
-            [
-                "a"
-            ]
-        ],
+        "address": "a",
+        "cep": "a",
+        "phone": "a",
+        "email": "a",
         "register_date": "03/11/2022"
     },
     {
         "type": "broker",
         "user_code": 7901,
-        "name": [
-            "b"
-        ],
+        "name": "b",
         "cpf": "b",
         "rg": "b",
         "anniversary_date": "04/05/1991",
-        "address": [
-            "b"
-        ],
-        "cep": [
-            "b"
-        ],
-        "phone": [
-            "b"
-        ],
-        "email": [
-            "b@email.com"
-        ],
+        "address": "b",
+        "cep": "b",
+        "phone": "b",
+        "email": "b@email.com",
         "hired_date": "01/02/2005",
         "growf": "b",
-        "wage": "15000",
+        "wage": 15000.0,
         "pis": "b"
     }
 ]

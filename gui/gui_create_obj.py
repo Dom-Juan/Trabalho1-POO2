@@ -2,6 +2,8 @@ import PySimpleGUI as sg
 import sys
 
 from classes.money.insurance import Insurance
+from classes.money.payment_method_card import PaymentByCard
+from classes.money.payment_method_money import PaymentByMoney
 
 # import de classes
 sys.path.append('../')
@@ -31,36 +33,36 @@ def create_user_from_file(list_obj) -> list:
   loaded_users_from_file: list = []
   loaded_user: object = None
   for data in list_obj:
-    if (data['type'] == 'client'):
+    if data["type"] == "client":
       loaded_user = UserClient(
-        data['name'],
-        data['cpf'],
-        data['rg'],
-        data['anniversary_date'],
-        data['address'],
-        data['cep'],
-        data['phone'],
-        data['email']
+        str(data["name"]),
+        str(data["cpf"]),
+        str(data["rg"]),
+        data["anniversary_date"],
+        str(data["address"]),
+        str(data["cep"]),
+        str(data["phone"]),
+        str(data["email"])
       )
-      loaded_user.set_user_code(data['user_code'])
-      loaded_user.set_register_date(data['register_date'])
-    elif (data['type'] == 'broker'):
+      loaded_user.set_user_code(data["user_code"])
+      loaded_user.set_register_date(data["register_date"])
+    elif data["type"] == "broker":
       loaded_user = UserBroker(
-        data['name'],
-        data['cpf'],
-        data['rg'],
-        data['anniversary_date'],
-        data['address'],
-        data['cep'],
-        data['phone'],
-        data['email'],
-        data['growf'],
-        data['wage'],
-        data['pis'],
-        data['hired_date']
+        str(data["name"]),
+        str(data["cpf"]),
+        str(data["rg"]),
+        data["anniversary_date"],
+        str(data["address"]),
+        str(data["cep"]),
+        str(data["phone"]),
+        str(data["email"]),
+        str(data["growf"]),
+        float(data["wage"]),
+        str(data["pis"]),
+        data["hired_date"]
       )
-      loaded_user.set_user_code(data['user_code'])
-      loaded_user.set_hired_date(data['hired_date'])
+      loaded_user.set_user_code(data["user_code"])
+      loaded_user.set_hired_date(data["hired_date"])
     else:
       print("ERROR, NULL DETECTADO!!!")
       continue
@@ -383,4 +385,61 @@ def create_insurance() -> object:
       return insurance
   window.close()
 
+
+# Criando método de pagamento dinheiro
+def create_payment_method_money() -> object:
+  payment: object = None
+  layout = [
+    [sg.Text('Tipo:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Quantidade a ser paga:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Button('Criar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
+  ]
+  window = sg.Window("Criar Pagamento Dinheiro", layout, element_justification='c', resizable=True, margins=(5, 5))
+  while True:
+    event, values = window.read(close=True)
+    if '' in values or None in values:
+      result_window('Algum campo está vazio, tente novamente.')
+      break
+    if event in ["Exit", sg.WIN_CLOSED]:
+      break
+    if event == "Criar":
+      payment = PaymentByMoney(
+        str(values[0]),
+        float(values[1]),
+      )
+      result_window('Operação feita com sucesso')
+      print(f"GUI loop, ", type(payment))
+      return payment
+  window.close()
+
+
+# Criando método de pagamento cartão
+def create_payment_method_card() -> object:
+  payment: object = None
+  layout = [
+    [sg.Text('Tipo:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Nome no cartão:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Bandeira:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Número no cartão:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Button('Criar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
+  ]
+  window = sg.Window("Criar Pagamento Cartão", layout, element_justification='c', resizable=True, margins=(5, 5))
+  while True:
+    event, values = window.read(close=True)
+    if '' in values or None in values:
+      result_window('Algum campo está vazio, tente novamente.')
+      break
+    if event in ["Exit", sg.WIN_CLOSED]:
+      break
+    if event == "Criar":
+      payment = PaymentByCard(
+        str(values[0]),
+        str(values[1]),
+        str(values[2]),
+        str(values[3]),
+      )
+      result_window('Operação feita com sucesso')
+      print(f"GUI loop, ", type(payment))
+      return payment
+  window.close()
 # FIM Lógica de criação de objetos
