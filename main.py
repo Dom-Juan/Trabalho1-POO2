@@ -4,7 +4,7 @@ from gui.main_gui import main_window
 
 
 def main():
-  main_window('Trabalho 1 de POO 2')
+  main_window('Trabalho 1 de POO 2', 'Imobiliária Unesp')
 
 
 if __name__ == '__main__':

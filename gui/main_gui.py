@@ -10,7 +10,7 @@ from gui.gui_show_obj import show_all_insurance, show_ap_property, show_comercia
 
 # import de classes
 sys.path.append('../')
-from classes.user.user_broker import UserBroker
+from classes.real_state_company.real_state_company import RealStateCompany
 
 
 # Mensagem de sucesso
@@ -28,7 +28,22 @@ def result_window(text) -> None:
 
 
 # Janela principal.
-def main_window(name):
+def main_window(name, real_state_company_name):
+  # Instanciando a imobiliária
+  user_list: list = list()
+  property_list: list = list()
+  insurance_list: list = list()
+  payment_list: list = list()
+  rental_list: list = list()
+  sale_list: list = list()
+  real_state_company = RealStateCompany(
+    real_state_company_name, "Rua Abacate Felicidade",
+    rental_list, sale_list,
+    property_list,
+    user_list,
+    insurance_list,
+    []
+  )
   pyglet.font.add_file(r"./fonts/Roboto-Regular.ttf")
   font1 = ("Roboto Regular", 12)
   sg.set_options(font=font1)
@@ -100,15 +115,6 @@ def main_window(name):
             ]
           ],
           [
-            '&Imobiliária',
-            [
-              'Criar Imobiliaria',
-              'Mostar todos as imob.',
-              'Salvar arquivo imob.'
-              'Carregar arquivo imob.'
-            ]
-          ],
-          [
             '&Alugéis',
             [
               'Criar Aluguel',
@@ -125,7 +131,13 @@ def main_window(name):
               'Salvar arquivo venda',
               'Carregar arquivo venda'
             ]
-          ]
+          ],
+          [
+            '&Imobiliária',
+            [
+              'Salvar arquivo da imobiliaria'
+            ]
+          ],
         ],
         font=('Cascadia Code', 12),
         tearoff=False,
@@ -141,11 +153,6 @@ def main_window(name):
   layout2 = []  # layout da janela
   # Configurações da página.
   window = sg.Window(name, layout, size=(1280, 720), resizable=True, enable_close_attempted_event=True, finalize=True)
-  # Array de objetos instanciados.
-  user_list: list = list()
-  property_list: list = list()
-  insurance_list: list = list()
-  payment_list: list = list()
   # Objetos instanciados com Null para receberem os ponteiros depois.
   obj: object = None
   while True:
@@ -160,31 +167,31 @@ def main_window(name):
       obj = create_client()
       print(f"Main loop, ", obj)
       if obj is not None:
-        user_list.append(obj)
+        real_state_company.add_user(obj)
     if event == "Criar Corretor":
       obj = create_broker()
       print(f"Main loop, ", obj)
       if obj is not None:
-        user_list.append(obj)
+        real_state_company.add_user(obj)
     if event == "Criar Casa":
       obj = create_house()
       print(f"Main loop, ", obj)
       if obj is not None:
-        property_list.append(obj)
+        real_state_company.add_real_state_properties(obj)
     if event == "Criar Apartamento":
       obj = create_apartment()
       print(f"Main loop, ", obj)
       if obj is not None:
-        property_list.append(obj)
+        real_state_company.add_real_state_properties(obj)
     if event == "Criar Comercio":
       obj = create_comercial()
       print(f"Main loop, ", obj)
       if obj is not None:
-        property_list.append(obj)
+        real_state_company.add_real_state_properties(obj)
     if event == "Criar Seguro":
       obj = create_insurance()
       if obj is not None:
-        insurance_list.append(obj)
+        real_state_company.add_insurance(obj)
     if event == "Criar Pagamento Dinheiro":
       obj = create_payment_method_money()
       if obj is not None:
@@ -195,50 +202,53 @@ def main_window(name):
         payment_list.append(obj)
     # Lógica de mostrar info dos objetos.
     if event == "Mostrar todos Clientes":
-      show_users_client(user_list)
+      show_users_client(real_state_company.users)
     if event == "Mostar todos Corretores":
-      show_users_broker(user_list)
+      show_users_broker(real_state_company.users)
     if event in ['Mostar todos os Imóveis', '-ALLPROPERTY-']:
-      show_all_property(property_list)
+      show_all_property(real_state_company.real_state_properties)
     if event == 'Mostar todos as Casas':
-      show_home_property(property_list)
+      show_home_property(real_state_company.real_state_properties)
     if event in ['Mostar todos os Apartamentos', '-ALLPROPERTYAPARTMENT-']:
-      show_ap_property(property_list)
+      show_ap_property(real_state_company.real_state_properties)
     if event in ['Mostar todos os Comércios', '-ALLPROPERTYCOMERCIAL-']:
-      show_comercial_property(property_list)
+      show_comercial_property(real_state_company.real_state_properties)
     if event == "Mostar Seguros":
-      show_all_insurance(insurance_list)
+      show_all_insurance(real_state_company.insurance)
     # Lógicas de carregar arquivos.
     if event == "Carregar arquivo usuários":
       new_user_list: list = load_file_gui_users()
       if new_user_list != None:
         for u in new_user_list[:]:
-          user_list.append(u)
+          real_state_company.add_user(u)
         result_window('Arquivo carregado com sucesso!')
     if event == 'Carregar arquivo imoveis':
       new_property_list: list = load_file_gui_property()
       if new_property_list != None:
         for p in new_property_list[:]:
-          property_list.append(p)
+          real_state_company.add_real_state_properties(p)
         result_window('Arquivo carregado com sucesso!')
     if event in ['Carregar arquivo do seguro', '-LOADALLINSURANCE-']:
       new_insurance_list: list = load_file_gui_insurance()
       if new_insurance_list != None:
         for i in new_insurance_list[:]:
-          insurance_list.append(i)
+          real_state_company.add_insurance(i)
         result_window('Arquivo carregado com sucesso!')
     # Lógicas de salvar arquivos.
     if event == "Salvar arquivo usuários":
-      for u in user_list:
+      for u in real_state_company.users:
         u.save_json_file()
       result_window('Arquivo salvo com sucesso!')
     if event in ["Salvar arquivo imoveis", '-SAVEALLPROPERTY-']:
-      for p in property_list:
+      for p in real_state_company.real_state_properties:
         p.save_json_file()
       result_window('Arquivo salvo com sucesso!')
     if event in ["Salvar arquivo do seguro", '-SAVEALLINSURANCE-']:
-      for i in insurance_list:
+      for i in real_state_company.insurance:
         i.save_json_file()
+      result_window('Arquivo salvo com sucesso!')
+    if event in ['Salvar arquivo da imobiliaria', '-SAVEALREALSTATECOMPANY-']:
+      real_state_company.save_json_file()
       result_window('Arquivo salvo com sucesso!')
     obj = None
   window.close()

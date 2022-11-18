@@ -1,5 +1,13 @@
 [
     {
-        "payment_code": "0"
-    }
-]
+        "name": "0"
+    },
+    {
+        "type": "real_state_company",
+        "name": "Imobili\u00e1ria Unesp",
+        "address": "Rua Abacate Felicidade",
+        "rentals": [],
+        "sales": [],
+        "properties": [],
+        "users": [
+            
