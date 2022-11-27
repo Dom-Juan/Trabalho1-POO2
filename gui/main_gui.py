@@ -3,7 +3,7 @@ import sys
 import pyglet
 
 from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
-  create_insurance, create_payment_method_card, create_payment_method_money
+  create_insurance, create_payment_method_card, create_payment_method_money, create_sale
 from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_users
 from gui.gui_show_obj import show_all_insurance, show_ap_property, show_comercial_property,\
   show_home_property, show_all_property, show_users_broker, show_users_client
@@ -158,7 +158,10 @@ def main_window(name, real_state_company_name):
   while True:
     event, values = window.read()
     layout2.append([sg.Text('Resultado'), values])
-    if event in [sg.WIN_CLOSED, 'Sair']:
+
+    print(event)
+
+    if event in [sg.WIN_CLOSE_ATTEMPTED_EVENT, 'Sair']:
       break
     if event == "Botão da Sara":
       janela = 1 # colocar a função da janela em que sera editada.
@@ -200,6 +203,10 @@ def main_window(name, real_state_company_name):
       obj = create_payment_method_card()
       if obj is not None:
         payment_list.append(obj)
+    if event == "Criar Venda":
+      obj = create_sale(real_state_company.users, real_state_company.real_state_properties, payment_list)
+      if obj is not None:
+        real_state_company.add_sales(obj)
     # Lógica de mostrar info dos objetos.
     if event == "Mostrar todos Clientes":
       show_users_client(real_state_company.users)

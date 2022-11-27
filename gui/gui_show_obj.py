@@ -50,60 +50,60 @@ def show_users_client(user_list: list) -> None:
         Col.append([sg.HSeparator()])
         Col.append([
           sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
-          sg.Text(str(user.get_user_code()), pad=(5, 5), size=(45, 1))  # Valor do obj.
+          sg.Text(str(user.user_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
         ])
         Col.append(
           [
             sg.Text('Nome: ', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_name()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.name), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('CPF:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_cpf()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.cpf), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('RG:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_rg()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.rg), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Ano de nascimento:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_anniversary_date()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.anniversary_date), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Endereço:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_address()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.address), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('CEP:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_cep()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.cep), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Telefone:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_phone()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.phone), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Email:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_email()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.email), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Data de registro:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_register_date()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.register_date), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append([sg.HSeparator()])
@@ -135,78 +135,78 @@ def show_users_broker(user_list: list) -> None:
         Col.append([sg.HSeparator()])
         Col.append([
           sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
-          sg.Text(str(user.get_user_code()), pad=(5, 5), size=(45, 1))  # Valor do obj.
+          sg.Text(str(user.user_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
         ])
         Col.append(
           [
             sg.Text('Nome: ', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_name()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.name), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('CPF:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_cpf()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.cpf), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('RG:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_rg()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.rg), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Ano de nascimento:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_anniversary_date()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.anniversary_date), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Endereço:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_address()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.address), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('CEP:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_cep()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.cep), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Telefone:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_phone()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.phone), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Email:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_email()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.email), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Crescimento:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_growf()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.growf), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Salário:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_wage()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.wage), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('PIS:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_pis()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.pis), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
             sg.Text('Data de admissão:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(user.get_hired_date()), pad=(5, 5), size=(45, 1))
+            sg.Text(str(user.hired_date), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append([sg.HSeparator()])

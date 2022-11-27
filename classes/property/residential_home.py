@@ -5,8 +5,7 @@ import datetime
 from datetime import date
 from os import path
 
-sys.path.append('../')
-sys.path.append('../')
+sys.path.append('..\\..')
 from classes.property.property import Property
 
 

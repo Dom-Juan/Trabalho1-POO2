@@ -2,105 +2,124 @@ import json
 import sys
 import datetime
 
-from abc import ABC
 from datetime import date
 from os import path
 
 import PySimpleGUI as sg
 
-sys.path.append('../')
-sys.path.append('../')
+sys.path.append('..\\..')
 from classes.user.user import User
 
 
-class UserClient(User, ABC):
+class UserClient(User):
   def __init__(self, name: str, cpf: str, rg: str, anniversary_date: str, address: str, cep: str, phone: str,
                email: str):
     super(UserClient, self).__init__(name, cpf, rg, anniversary_date, address, cep, phone, email)
     today = date.today()
     self._register_date = today.strftime("%d/%m/%Y")
 
-  def get_register_date(self):
+  @property
+  def register_date(self):
     return self._register_date
 
-  def set_register_date(self, value: str):
+  @register_date.setter
+  def register_date(self, value):
     self._register_date = value
     pass
 
-  def get_user_code(self):
+  @property
+  def user_code(self):
     return self._user_code
 
-  def set_user_code(self, value: int):
+  @user_code.setter
+  def user_code(self, value):
     self._user_code = value
     pass
 
-  def get_name(self):
+  @property
+  def name(self):
     return self._name
 
-  def set_name(self, value):
+  @name.setter
+  def name(self, value):
     self._name = value
     pass
 
-  def get_cpf(self):
+  @property
+  def cpf(self):
     return self._cpf
 
-  def set_cpf(self, value):
+  @cpf.setter
+  def cpf(self, value):
     self._cpf = value
     pass
 
-  def get_rg(self):
+  @property
+  def rg(self):
     return self._rg
 
-  def set_rg(self, value):
+  @rg.setter
+  def rg(self, value):
     self._rg = value
     pass
 
-  def get_anniversary_date(self):
+  @property
+  def anniversary_date(self):
     return self._anniversary_date
 
-  def set_anniversary_date(self, value):
+  @anniversary_date.setter
+  def anniversary_date(self, value):
     self._anniversary_date = datetime.strptime(value, '%d/%m/%Y').date().strftime('%d/%m/%Y')
     pass
 
-  def get_address(self):
+  @property
+  def address(self):
     return self._address
 
-  def set_address(self, value):
+  @address.setter
+  def address(self, value):
     self._address = value
     pass
 
-  def get_cep(self):
+  @property
+  def cep(self):
     return self._cep
 
-  def set_cep(self, value):
+  @cep.setter
+  def cep(self, value):
     self._cep = value
     pass
 
-  def get_phone(self):
+  @property
+  def phone(self):
     return self._phone
 
-  def set_phone(self, value):
+  @phone.setter
+  def phone(self, value):
     self._phone = value
     pass
 
-  def get_email(self):
+  @property
+  def email(self):
     return self._email
 
-  def set_email(self, value):
+  @email.setter
+  def email(self, value):
     self._email = value
+    pass
 
   def print_obj(self):
     self._layout = [
-      [sg.Text(self._register_date)],
-      [sg.Text(self._user_code)],
-      [sg.Text(self._name)],
-      [sg.Text(self._cpf)],
-      [sg.Text(self._rg)],
-      [sg.Text(self._anniversary_date)],
-      [sg.Text(self._address)],
-      [sg.Text(self._cep)],
-      [sg.Text(self._phone)],
-      [sg.Text(self._email)],
+      [sg.Text(self.register_date)],
+      [sg.Text(self.user_code)],
+      [sg.Text(self.name)],
+      [sg.Text(self.cpf)],
+      [sg.Text(self.rg)],
+      [sg.Text(self.anniversary_date)],
+      [sg.Text(self.address)],
+      [sg.Text(self.cep)],
+      [sg.Text(self.phone)],
+      [sg.Text(self.email)],
       [sg.Button('Ok')]
     ]
     window = sg.Window("Print do Cliente.", self._layout, size=(640, 480), resizable=True, modal=True)
@@ -126,16 +145,16 @@ class UserClient(User, ABC):
     print(type(listObj))
     listObj.append({
       "type": "client",
-      "user_code": self._user_code,
-      "name": self._name,
-      "cpf": self._cpf,
-      "rg": self._rg,
-      "anniversary_date": self._anniversary_date,
-      "address": self._address,
-      "cep": self._cep,
-      "phone": self._phone,
-      "email": self._email,
-      "register_date": self._register_date
+      "user_code": self.user_code,
+      "name": self.name,
+      "cpf": self.cpf,
+      "rg": self.rg,
+      "anniversary_date": self.anniversary_date,
+      "address": self.address,
+      "cep": self.cep,
+      "phone": self.phone,
+      "email": self.email,
+      "register_date": self.register_date
     })
     # Verificando JSON atualizado
     print(listObj)

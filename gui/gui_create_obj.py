@@ -1,17 +1,19 @@
 import PySimpleGUI as sg
 import sys
 
+sys.path.append('..\\')
+
 from classes.money.insurance import Insurance
 from classes.money.payment_method_card import PaymentByCard
 from classes.money.payment_method_money import PaymentByMoney
 
 # import de classes
-sys.path.append('../')
 from classes.user.user_client import UserClient
 from classes.user.user_broker import UserBroker
 from classes.property.residential_apartment import ResidentialApartment
 from classes.property.residential_home import ResidentialHome
 from classes.property.comercial import Comercial
+from classes.sales.sales import Sale
 from helpers.helper import check_if_all_none, check_if_all_empty
 
 # Mensagem de sucesso
@@ -44,8 +46,8 @@ def create_user_from_file(list_obj) -> list:
         str(data["phone"]),
         str(data["email"])
       )
-      loaded_user.set_user_code(data["user_code"])
-      loaded_user.set_register_date(data["register_date"])
+      loaded_user.user_code = data["user_code"]
+      loaded_user.register_date = data["register_date"]
     elif data["type"] == "broker":
       loaded_user = UserBroker(
         str(data["name"]),
@@ -61,8 +63,8 @@ def create_user_from_file(list_obj) -> list:
         str(data["pis"]),
         data["hired_date"]
       )
-      loaded_user.set_user_code(data["user_code"])
-      loaded_user.set_hired_date(data["hired_date"])
+      loaded_user.user_code = data["user_code"]
+      loaded_user.hired_date = data["hired_date"]
     else:
       print("ERROR, NULL DETECTADO!!!")
       continue
@@ -143,6 +145,47 @@ def create_insurance_from_file(list_obj):
     prop.property_code = int(data["insurance_code"])
     loaded_insurance_from_file.append(prop)
   return loaded_insurance_from_file
+
+def create_sale_from_file(list_obj) -> list:
+  loaded_users_from_file: list = []
+  loaded_user: object = None
+  for data in list_obj:
+    if data["type"] == "client":
+      loaded_user = UserClient(
+        str(data["name"]),
+        str(data["cpf"]),
+        str(data["rg"]),
+        data["anniversary_date"],
+        str(data["address"]),
+        str(data["cep"]),
+        str(data["phone"]),
+        str(data["email"])
+      )
+      loaded_user.set_user_code(data["user_code"])
+      loaded_user.set_register_date(data["register_date"])
+    elif data["type"] == "broker":
+      loaded_user = UserBroker(
+        str(data["name"]),
+        str(data["cpf"]),
+        str(data["rg"]),
+        data["anniversary_date"],
+        str(data["address"]),
+        str(data["cep"]),
+        str(data["phone"]),
+        str(data["email"]),
+        str(data["growf"]),
+        float(data["wage"]),
+        str(data["pis"]),
+        data["hired_date"]
+      )
+      loaded_user.set_user_code(data["user_code"])
+      loaded_user.set_hired_date(data["hired_date"])
+    else:
+      print("ERROR, NULL DETECTADO!!!")
+      continue
+    loaded_users_from_file.append(loaded_user)
+  print("> Usuários carregados com sucesso! ", loaded_users_from_file)
+  return loaded_users_from_file
 
 
 # Criar pela interface
@@ -439,7 +482,59 @@ def create_payment_method_card() -> object:
         str(values[3]),
       )
       result_window('Operação feita com sucesso')
-      print(f"GUI loop, ", type(payment))
+      print(f"GUI loop, ", type(payment), values)
       return payment
+  window.close()
+
+def create_sale(user_list, property_list, payment_list) -> object:
+  sale: object = None
+
+  client_dict = {}
+  broker_dict = {}
+  property_dict = {}
+  payment_dict = {}
+
+  for i in user_list:
+    if isinstance(i, UserClient):
+      client_dict[i.name] = i
+    else:
+      broker_dict[i.name] = i
+
+  for i in property_list:
+    property_dict[i.address] = i
+  for i in payment_list:
+    payment_dict[i.payment_code] = i
+
+  layout = [
+    [sg.Text('Cliente:', pad=(5, 5), size=(20, 1)), sg.Combo(list(client_dict), size=(48, 1))],
+    [sg.Text('Corretor:', pad=(5, 5), size=(20, 1)), sg.Combo(list(broker_dict), size=(48, 1))],
+    [sg.Text('Imóvel:', pad=(5, 5), size=(20, 1)), sg.Combo(list(property_dict), size=(48, 1))],
+    [sg.Text('Data da Venda:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(48, 1))],
+    [sg.Text('Valor da Venda:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(48, 1))],
+    [sg.Text('Tipo de Pagamento:', pad=(5, 5), size=(20, 1)), sg.Combo(list(payment_dict), size=(48, 1))],
+
+    [sg.Button('Criar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
+  ]
+  window = sg.Window("Criar Venda", layout, element_justification='c', resizable=True, margins=(5, 5))
+  while True:
+    event, values = window.read(close=True)
+    if '' in values or None in values:
+      result_window('Algum campo está vazio, tente novamente.')
+      break
+    if event in ["Exit", sg.WIN_CLOSED]:
+      break
+    if event == "Criar":
+      print(values)
+      sale = Sale(
+        client_dict[str(values[0])],
+        broker_dict[str(values[1])],
+        property_dict[str(values[2])],
+        str(values[3]),
+        float(values[4]),
+        payment_dict[int(values[5])]
+      )
+      result_window('Operação feita com sucesso')
+      print(f"GUI loop, ", type(sale))
+      return sale
   window.close()
 # FIM Lógica de criação de objetos

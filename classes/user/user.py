@@ -1,97 +1,103 @@
 import random
 import datetime
 
-from abc import ABC, abstractmethod
-
-class User(ABC):
+class User():
   def __init__(self, name: str, cpf: str, rg: str, anniversary_date: str, address: str, cep: str, phone: str,
                email: str):
     self._user_code: int = random.randint(0, 9999)
-    self._name: str = name,
+    self._name: str = name
     self._cpf: str = cpf
     self._rg: str = rg
     if anniversary_date == (None or ''):
       self._anniversary_date: any = None
     else:
       self._anniversary_date: str = datetime.datetime.strptime(anniversary_date, '%d/%m/%Y').date().strftime('%d/%m/%Y')
-    self._address: str = address,
-    self._cep: str = cep,
-    self._phone: str = phone,
-    self._email: str = email,
+    self._address: str = address
+    self._cep: str = cep
+    self._phone: str = phone
+    self._email: str = email
     self._layout = []
 
-  @abstractmethod
-  def get_user_code(self):
+  @property
+  def user_code(self):
+    return self._user_code
+
+  @user_code.setter
+  def user_code(self, value):
+    self._user_code = value
     pass
 
-  @abstractmethod
-  def set_user_code(self, value: int):
+  @property
+  def name(self):
+    return self._name
+
+  @name.setter
+  def name(self, value):
+    self._name = value
     pass
 
-  @abstractmethod
-  def get_name(self):
+  @property
+  def cpf(self):
+    return self._cpf
+
+  @cpf.setter
+  def cpf(self, value):
+    self._cpf = value
     pass
 
-  @abstractmethod
-  def set_name(self, value):
+  @property
+  def rg(self):
+    return self._rg
+
+  @rg.setter
+  def rg(self, value):
+    self._rg = value
     pass
 
-  @abstractmethod
-  def get_cpf(self):
+  @property
+  def anniversary_date(self):
+    return self._anniversary_date
+
+  @anniversary_date.setter
+  def anniversary_date(self, value):
+    self._anniversary_date = datetime.strptime(value, '%d/%m/%Y').date().strftime('%d/%m/%Y')
     pass
 
-  @abstractmethod
-  def set_cpf(self, value):
+  @property
+  def address(self):
+    return self._address
+
+  @address.setter
+  def address(self, value):
+    self._address = value
     pass
 
-  @abstractmethod
-  def get_rg(self):
+  @property
+  def cep(self):
+    return self._cep
+
+  @cep.setter
+  def cep(self, value):
+    self._cep = value
     pass
 
-  @abstractmethod
-  def set_rg(self, value):
+  @property
+  def phone(self):
+    return self._phone
+
+  @phone.setter
+  def phone(self, value):
+    self._phone = value
     pass
 
-  @abstractmethod
-  def get_anniversary_date(self):
+  @property
+  def email(self):
+    return self._email
+
+  @email.setter
+  def email(self, value):
+    self._email = value
     pass
 
-  @abstractmethod
-  def set_anniversary_date(self, value):
-    pass
-
-  @abstractmethod
-  def get_address(self):
-    pass
-
-  @abstractmethod
-  def set_address(self, value):
-    pass
-
-  @abstractmethod
-  def get_cep(self):
-    pass
-
-  @abstractmethod
-  def set_cep(self, value):
-    pass
-
-  @abstractmethod
-  def get_phone(self):
-    pass
-
-  @abstractmethod
-  def set_phone(self, value):
-    pass
-
-  @abstractmethod
-  def get_email(self):
-    pass
-
-  @abstractmethod
-  def set_email(self, value):
-    pass
-
-  @abstractmethod
   def print_obj(self):
     pass

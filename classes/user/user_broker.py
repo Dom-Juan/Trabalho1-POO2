@@ -2,18 +2,16 @@ import json
 import sys
 import datetime
 
-from abc import ABC
 from datetime import date
 from os import path
 
 import PySimpleGUI as sg
 
-sys.path.append('../')
-sys.path.append('../')
+sys.path.append('..\\..')
 from classes.user.user import User
 
 
-class UserBroker(User, ABC):
+class UserBroker(User):
   def __init__(self, name: str, cpf: str, rg: str, anniversary_date: str, address: str, cep: str, phone: str,
                email: str, growf: str, wage: float, pis: str, hired_date: str):
     super(UserBroker, self).__init__(name, cpf, rg, anniversary_date, address, cep, phone, email)
@@ -22,112 +20,139 @@ class UserBroker(User, ABC):
     self._pis: str = pis
     self._hired_date: str = hired_date
 
-  def get_growf(self):
+  @property
+  def growf(self):
     return self._growf
 
-  def set_growf(self, value: str):
+  @growf.setter
+  def growf(self, value):
     self._growf = value
     pass
 
-  def get_wage(self):
+  @property
+  def wage(self):
     return self._wage
 
-  def set_wage(self, value: float):
+  @wage.setter
+  def wage(self, value):
     self._wage = value
     pass
 
-  def get_pis(self):
+  @property
+  def pis(self):
     return self._pis
 
-  def set_pis(self, value: str):
+  @pis.setter
+  def pis(self, value):
     self._pis = value
     pass
 
-  def get_hired_date(self):
+  @property
+  def hired_date(self):
     return self._hired_date
 
-  def set_hired_date(self, value: str):
-    self._hired_date: str = value
+  @hired_date.setter
+  def hired_date(self, value):
+    self._hired_date = value
     pass
 
-  def get_user_code(self):
+  @property
+  def user_code(self):
     return self._user_code
 
-  def set_user_code(self, value: int):
+  @user_code.setter
+  def user_code(self, value):
     self._user_code = value
     pass
 
-  def get_name(self):
+  @property
+  def name(self):
     return self._name
 
-  def set_name(self, value):
+  @name.setter
+  def name(self, value):
     self._name = value
     pass
 
-  def get_cpf(self):
+  @property
+  def cpf(self):
     return self._cpf
 
-  def set_cpf(self, value):
+  @cpf.setter
+  def cpf(self, value):
     self._cpf = value
     pass
 
-  def get_rg(self):
+  @property
+  def rg(self):
     return self._rg
 
-  def set_rg(self, value):
+  @rg.setter
+  def rg(self, value):
     self._rg = value
     pass
 
-  def get_anniversary_date(self):
+  @property
+  def anniversary_date(self):
     return self._anniversary_date
 
-  def set_anniversary_date(self, value):
-    self._anniversary_date = datetime.strptime(value, '%d/%m/%Y').date().strftime('%d/%m/%Y')
+  @anniversary_date.setter
+  def anniversary_date(self, value):
+    self._anniversary_date = value
     pass
 
-  def get_address(self):
+  @property
+  def address(self):
     return self._address
 
-  def set_address(self, value):
+  @address.setter
+  def address(self, value):
     self._address = value
     pass
 
-  def get_cep(self):
+  @property
+  def cep(self):
     return self._cep
 
-  def set_cep(self, value):
+  @cep.setter
+  def cep(self, value):
     self._cep = value
     pass
 
-  def get_phone(self):
+  @property
+  def phone(self):
     return self._phone
 
-  def set_phone(self, value):
+  @phone.setter
+  def phone(self, value):
     self._phone = value
     pass
 
-  def get_email(self):
+  @property
+  def email(self):
     return self._email
 
-  def set_email(self, value):
+  @email.setter
+  def email(self, value):
     self._email = value
+    pass
 
   def print_obj(self):
     self._layout = [
-      [sg.Text(self._hired_date)],
-      [sg.Text(self._user_code)],
-      [sg.Text(self._name)],
-      [sg.Text(self._cpf)],
-      [sg.Text(self._rg)],
-      [sg.Text(self._anniversary_date)],
-      [sg.Text(self._address)],
-      [sg.Text(self._cep)],
-      [sg.Text(self._phone)],
-      [sg.Text(self._email)],
-      [sg.Text(self._growf)],
-      [sg.Text(self._wage)],
-      [sg.Text(self._pis)],
-      [sg.Text(self._hired_date)],
+      [sg.Text(self.hired_date)],
+      [sg.Text(self.user_code)],
+      [sg.Text(self.name)],
+      [sg.Text(self.cpf)],
+      [sg.Text(self.rg)],
+      [sg.Text(self.anniversary_date)],
+      [sg.Text(self.address)],
+      [sg.Text(self.cep)],
+      [sg.Text(self.phone)],
+      [sg.Text(self.email)],
+      [sg.Text(self.growf)],
+      [sg.Text(self.wage)],
+      [sg.Text(self.pis)],
+      [sg.Text(self.hired_date)],
       [sg.Button('Ok')]
     ]
     window = sg.Window("Print do Cliente.", self._layout, size=(640, 480), resizable=True, modal=True)
@@ -153,19 +178,19 @@ class UserBroker(User, ABC):
     print(type(listObj))
     listObj.append({
       "type": "broker",
-      "user_code": self._user_code,
-      "name": self._name,
-      "cpf": self._cpf,
-      "rg": self._rg,
-      "anniversary_date": self._anniversary_date,
-      "address": self._address,
-      "cep": self._cep,
-      "phone": self._phone,
-      "email": self._email,
-      "hired_date": self._hired_date,
-      "growf": self._growf,
-      "wage": self._wage,
-      "pis": self._pis,
+      "user_code": self.user_code,
+      "name": self.name,
+      "cpf": self.cpf,
+      "rg": self.rg,
+      "anniversary_date": self.anniversary_date,
+      "address": self.address,
+      "cep": self.cep,
+      "phone": self.phone,
+      "email": self.email,
+      "hired_date": self.hired_date,
+      "growf": self.growf,
+      "wage": self.wage,
+      "pis": self.pis,
     })
     # Verificando JSON atualizado
     print(listObj)
