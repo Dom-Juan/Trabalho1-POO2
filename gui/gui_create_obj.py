@@ -187,6 +187,39 @@ def create_sale_from_file(list_obj) -> list:
   print("> Usuários carregados com sucesso! ", loaded_users_from_file)
   return loaded_users_from_file
 
+def create_sale_from_file(obj_list: list, user_list: list, property_list: list,  payment_list: list)-> list:
+  client_sale: object = None
+  broker_sale: object = None
+  property_sale: object = None
+  payment_sale: object = None
+  sale_list: list = []
+  print(obj_list)
+  i: int = 0
+  while i < len(obj_list):
+    print(user_list[i])
+    print(property_list[i])
+    print(payment_list[i])
+    if user_list[i].user_code == str(obj_list[i]["client"]):
+      client_sale = user_list[i]
+    elif user_list[i].user_code == str(obj_list[i]["broker"]):
+      broker_sale = user_list[i]
+    if property_list[i].property_code == str(obj_list[i]["sale_property"]):
+      property_sale = property_list[i]
+    if payment_list[i].payment_code == str(obj_list[i]["payment_code"]):
+      payment_sale = payment_list[i]
+    sale_list.append(Sale(
+      client_sale,
+      broker_sale,
+      property_sale,
+      str(obj_list[i]["sale_date"]),
+      float(obj_list[i]["total_sale_value"]),
+      payment_sale
+    ))
+    sale_list[i].sale_code = int(obj_list[i]["sale_code"])
+    i += 1
+  result_window('Operação feita com sucesso')
+  print(f"GUI loop, ", sale_list, type(sale_list))
+  return sale_list
 
 # Criar pela interface
 # Criar um cliente
@@ -525,16 +558,30 @@ def create_sale(user_list, property_list, payment_list) -> object:
       break
     if event == "Criar":
       print(values)
+      client_sale: object = None
+      broker_sale: object = None
+      property_sale: object = None
+      payment_sale: object = None
+      for client in user_list:
+        if client.name == str(values[0]):
+          client_sale = client
+        elif client.name == str(values[1]):
+          broker_sale = client
+      for property in property_list:
+        if property.name == str(values[2]):
+          property_sale = property
+      for payment in payment_list:
+        if payment.payment_type == str(values[3]):
+          payment_sale = payment
       sale = Sale(
-        client_dict[str(values[0])],
-        broker_dict[str(values[1])],
-        property_dict[str(values[2])],
+        client_sale,
+        broker_sale,
+        property_sale,
         str(values[3]),
         float(values[4]),
-        payment_dict[int(values[5])]
+        payment_sale
       )
       result_window('Operação feita com sucesso')
       print(f"GUI loop, ", type(sale))
       return sale
   window.close()
-# FIM Lógica de criação de objetos

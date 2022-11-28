@@ -6,14 +6,14 @@ from classes.money.payment import Payment
 
 class RealStateCompany:
   def __init__(self, name:str, address:str, rentals:list, sales: list, properties:list, users: list, insurances: list, config:any):
-    self.__name = name
-    self.__address = address
-    self.__rentals = rentals
-    self.__sales = sales
-    self.__properties = properties
-    self.__users = users
-    self.__insurance = insurances
-    self.__config = config
+    self.__name: str = name
+    self.__address: str = address
+    self.__rentals: list = rentals
+    self.__sales: list = sales
+    self.__properties: list = properties
+    self.__users: list = users
+    self.__insurance: list = insurances
+    self.__config: any = config
 
   @property
   def name(self):

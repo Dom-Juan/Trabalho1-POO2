@@ -4,14 +4,14 @@ import pyglet
 
 from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
   create_insurance, create_payment_method_card, create_payment_method_money, create_sale
-from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_users
-from gui.gui_show_obj import show_all_insurance, show_ap_property, show_comercial_property,\
-  show_home_property, show_all_property, show_users_broker, show_users_client
+from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_sales, load_file_gui_users
+from gui.gui_show_obj import show_all_insurance, show_all_payment_methods, show_ap_property, show_comercial_property, \
+  show_home_property, show_all_property, show_users_broker, show_users_client, show_all_sales_and_profit, \
+  show_all_sales_and_profit_month
 
 # import de classes
 sys.path.append('../')
 from classes.real_state_company.real_state_company import RealStateCompany
-
 
 # Mensagem de sucesso
 def result_window(text) -> None:
@@ -62,6 +62,12 @@ def main_window(name, real_state_company_name):
       sg.HSeparator()
     ],
     [
+      sg.Button('Mostar todas as vendas realizadas e o lucro total', size=(50, 2), key='-SHOW ALL SALES AND PROFIT-'),
+    ],
+    [
+      sg.Button('Mostar as vendas em um mês e seu lucro', size=(50, 2), key='- SHOW ALL SALES IN MONTH -'),
+    ],
+    [
       sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))
     ]
   ]
@@ -108,6 +114,7 @@ def main_window(name, real_state_company_name):
             [
               'Criar Pagamento Dinheiro',
               'Criar Pagamento Cartão',
+              'Mostrar todos pagamentos',
               'Mostar todos pagamentos com Dinheiro',
               'Mostar todos pagamentos com Cartão',
               'Carregar arquivo pagamento',
@@ -129,7 +136,7 @@ def main_window(name, real_state_company_name):
               'Criar Venda',
               'Mostar todos as vendas',
               'Salvar arquivo venda',
-              'Carregar arquivo venda'
+              'Carregar arquivo de vendas'
             ]
           ],
           [
@@ -158,9 +165,7 @@ def main_window(name, real_state_company_name):
   while True:
     event, values = window.read()
     layout2.append([sg.Text('Resultado'), values])
-
     print(event)
-
     if event in [sg.WIN_CLOSE_ATTEMPTED_EVENT, 'Sair']:
       break
     if event == "Botão da Sara":
@@ -220,26 +225,38 @@ def main_window(name, real_state_company_name):
       show_ap_property(real_state_company.real_state_properties)
     if event in ['Mostar todos os Comércios', '-ALLPROPERTYCOMERCIAL-']:
       show_comercial_property(real_state_company.real_state_properties)
+    if event in ['Mostrar todos pagamentos']:
+      show_all_payment_methods(payment_list)
     if event == "Mostar Seguros":
       show_all_insurance(real_state_company.insurance)
+    if event in ['Mostar todas as vendas realizadas e o lucro total', '-SHOW ALL SALES AND PROFIT-']:
+      show_all_sales_and_profit(real_state_company.sales)
+    if event in ['Mostar as vendas em um mês e seu lucro', '- SHOW ALL SALES IN MONTH -']:
+      show_all_sales_and_profit_month(real_state_company.sales)
     # Lógicas de carregar arquivos.
     if event == "Carregar arquivo usuários":
       new_user_list: list = load_file_gui_users()
-      if new_user_list != None:
+      if new_user_list is not None:
         for u in new_user_list[:]:
           real_state_company.add_user(u)
         result_window('Arquivo carregado com sucesso!')
     if event == 'Carregar arquivo imoveis':
       new_property_list: list = load_file_gui_property()
-      if new_property_list != None:
+      if new_property_list is not None:
         for p in new_property_list[:]:
           real_state_company.add_real_state_properties(p)
         result_window('Arquivo carregado com sucesso!')
     if event in ['Carregar arquivo do seguro', '-LOADALLINSURANCE-']:
       new_insurance_list: list = load_file_gui_insurance()
-      if new_insurance_list != None:
+      if new_insurance_list is not None:
         for i in new_insurance_list[:]:
           real_state_company.add_insurance(i)
+        result_window('Arquivo carregado com sucesso!')
+    if event in ['Carregar arquivo de vendas']:
+      new_sales_list: list = load_file_gui_sales(user_list, property_list, payment_list)
+      if new_sales_list is not None:
+        for s in new_sales_list[:]:
+          real_state_company.add_sales(s)
         result_window('Arquivo carregado com sucesso!')
     # Lógicas de salvar arquivos.
     if event == "Salvar arquivo usuários":

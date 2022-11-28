@@ -1,5 +1,11 @@
 [
     {
-        "sale_code": "0"
+        "sale_code": 54,
+        "client": 4274,
+        "broker": 3862,
+        "sale_property": 7369,
+        "sale_date": "06/06/2009",
+        "total_sale_value": 40000,
+        "payment_code": 105788032354281486074798192717069769274
     }
 ]

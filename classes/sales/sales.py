@@ -16,19 +16,19 @@ from classes.money.payment import Payment
 
 
 class Sale:
-  def __init__(self, client: UserClient, broker: UserBroker, sale_property: Property, 
-    sale_date: str, total_sale_value: float, payment_method: Payment):
+  def __init__(self, client: object, broker: object, sale_property: object,
+    sale_date: str, total_sale_value: float, payment_method: object):
 
     self.__sale_code: int = random.randint(0, 9999)
-    self.__client: UserCliente = client
-    self.__broker: UserBroker = broker
-    self.__sale_property: Property = sale_property
+    self.__client: object = client
+    self.__broker: object = broker
+    self.__sale_property: object = sale_property
     if sale_date == (None or ''):
       self.__sale_date: any = None
     else:
       self.__sale_date: str = datetime.datetime.strptime(sale_date, '%d/%m/%Y').date().strftime('%d/%m/%Y')
     self.__total_sale_value: float = total_sale_value
-    self.__payment_method: Payment = payment_method
+    self.__payment_method: object = payment_method
 
   @property
   def sale_code(self):
@@ -44,7 +44,7 @@ class Sale:
     return self.__client
 
   @client.setter
-  def client(self, value: UserClient):
+  def client(self, value: object):
     self.__client = value
     pass
 
@@ -53,7 +53,7 @@ class Sale:
     return self.__broker
 
   @broker.setter
-  def broker(self, value: UserBroker):
+  def broker(self, value: object):
     self.__broker = value
     pass
 
@@ -62,7 +62,7 @@ class Sale:
     return self.__sale_property
 
   @sale_property.setter
-  def sale_property(self, value: Property):
+  def sale_property(self, value: object):
     self.__sale_property = value
     pass
 
@@ -89,7 +89,7 @@ class Sale:
     return self.__payment_method
 
   @payment_method.setter
-  def payment_method(self, value: Payment):
+  def payment_method(self, value: object):
     self.__payment_method = value
     pass
 
@@ -113,7 +113,7 @@ class Sale:
     pass
 
   def save_json_file(self):
-    filename = './files/sale_data.json'
+    filename = '../../files/sale_data.json'
     if path.isfile(filename) is False:
       raise Exception("File not found")
     # Lendo o arquivo json
@@ -127,12 +127,12 @@ class Sale:
     print(type(listObj))
     listObj.append({
       "sale_code": self.sale_code,
-      "client": self.client.name,
-      "broker": self.broker.name,
-      "sale_property": self.sale_property.address,
+      "client": self.client.user_code,
+      "broker": self.broker.user_code,
+      "sale_property": self.sale_property.property_code,
       "sale_date": self.sale_date,
       "total_sale_value": self.total_sale_value,
-      "payment_method": self.payment_method.payment_code
+      "payment_code": self.payment_method.payment_code
     })
     # Verificando JSON atualizado
     print(listObj)
@@ -148,11 +148,12 @@ class Sale:
 if __name__ == '__main__':
   from classes.property.residential_apartment import ResidentialApartment
   from classes.money.payment_method_card import PaymentByCard
-
   print("DEBUG")
+  print(sys.path)
   c = UserClient("joão", "a", "a", "06/06/1998", "a", "a", "a", "a")
   b = UserBroker("pedro", "a", "a", "06/06/1999", "a", "a", "a", "a", "a", 123, "a", "a")
   p = ResidentialApartment("rua limão", "a", 123, 123, 111, 111, 111, 123, 123, 123, 111, 123)
   pm = PaymentByCard("cartão", "a", "a", "a")
   u = Sale(c, b, p, "06/06/2009", 40_000, pm)
   u.print_obj()
+  u.save_json_file()
