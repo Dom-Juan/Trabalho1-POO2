@@ -29,6 +29,23 @@ def result_window(text) -> None:
       break
   window.close()
 
+# Funções auxiliares de busca
+def find_user(id: int, user_list: list):
+  for u in user_list:
+    if u.user_code == id:
+      return u
+  return None
+def find_property(id: int, property_list: list):
+  for p in property_list:
+    if p.property_code == id:
+      return p
+  return None
+def find_payment(id: int, payment_list: list):
+  for p in payment_list:
+    if p.payment_code == id:
+      return p
+  return None
+
 # Lógica de criação de objetos
 # Cliente
 def create_user_from_file(list_obj) -> list:
@@ -146,46 +163,30 @@ def create_insurance_from_file(list_obj):
     loaded_insurance_from_file.append(prop)
   return loaded_insurance_from_file
 
-def create_sale_from_file(list_obj) -> list:
-  loaded_users_from_file: list = []
-  loaded_user: object = None
+def create_payment_from_file(list_obj) -> list:
+  loaded_payments_from_file: list = []
+  loaded_payment: object = None
   for data in list_obj:
-    if data["type"] == "client":
-      loaded_user = UserClient(
-        str(data["name"]),
-        str(data["cpf"]),
-        str(data["rg"]),
-        data["anniversary_date"],
-        str(data["address"]),
-        str(data["cep"]),
-        str(data["phone"]),
-        str(data["email"])
+    if data["type"] == "money":
+      loaded_payment = PaymentByMoney(
+        str(data["payment_type"]),
+        int(data["charge"])
       )
-      loaded_user.set_user_code(data["user_code"])
-      loaded_user.set_register_date(data["register_date"])
-    elif data["type"] == "broker":
-      loaded_user = UserBroker(
-        str(data["name"]),
-        str(data["cpf"]),
-        str(data["rg"]),
-        data["anniversary_date"],
-        str(data["address"]),
-        str(data["cep"]),
-        str(data["phone"]),
-        str(data["email"]),
-        str(data["growf"]),
-        float(data["wage"]),
-        str(data["pis"]),
-        data["hired_date"]
+      loaded_payment.payment_code = int(data["payment_code"])
+    elif data["type"] == "card":
+      loaded_payment = PaymentByCard(
+        str(data["payment_type"]),
+        str(data["card_name"]),
+        str(data["flag"]),
+        str(data["number"]),
       )
-      loaded_user.set_user_code(data["user_code"])
-      loaded_user.set_hired_date(data["hired_date"])
+      loaded_payment.payment_code = int(data["payment_code"])
     else:
       print("ERROR, NULL DETECTADO!!!")
       continue
-    loaded_users_from_file.append(loaded_user)
-  print("> Usuários carregados com sucesso! ", loaded_users_from_file)
-  return loaded_users_from_file
+    loaded_payments_from_file.append(loaded_payment)
+  print("> Pagamentos carregados com sucesso! ", loaded_payments_from_file)
+  return loaded_payments_from_file
 
 def create_sale_from_file(obj_list: list, user_list: list, property_list: list,  payment_list: list)-> list:
   client_sale: object = None
@@ -194,30 +195,24 @@ def create_sale_from_file(obj_list: list, user_list: list, property_list: list, 
   payment_sale: object = None
   sale_list: list = []
   print(obj_list)
-  i: int = 0
-  while i < len(obj_list):
-    print(user_list[i])
-    print(property_list[i])
-    print(payment_list[i])
-    if user_list[i].user_code == str(obj_list[i]["client"]):
-      client_sale = user_list[i]
-    elif user_list[i].user_code == str(obj_list[i]["broker"]):
-      broker_sale = user_list[i]
-    if property_list[i].property_code == str(obj_list[i]["sale_property"]):
-      property_sale = property_list[i]
-    if payment_list[i].payment_code == str(obj_list[i]["payment_code"]):
-      payment_sale = payment_list[i]
-    sale_list.append(Sale(
-      client_sale,
-      broker_sale,
-      property_sale,
-      str(obj_list[i]["sale_date"]),
-      float(obj_list[i]["total_sale_value"]),
-      payment_sale
-    ))
-    sale_list[i].sale_code = int(obj_list[i]["sale_code"])
-    i += 1
-  result_window('Operação feita com sucesso')
+  for i in obj_list:
+    client_sale = find_user(i["client"], user_list)
+    if client_sale != None and isinstance(client_sale, UserClient):
+      broker_sale = find_user(i["broker"], user_list)
+      if broker_sale != None and isinstance(broker_sale, UserBroker):
+        property_sale = find_property(i["sale_property"], property_list)
+        if property_sale != None:
+          payment_sale = find_payment(i["payment_code"], payment_list)
+          if payment_sale != None:
+            sale_list.append(Sale(
+            client_sale,
+            broker_sale,
+            property_sale,
+            str(i["sale_date"]),
+            float(i["total_sale_value"]),
+            payment_sale
+            ))
+            sale_list[-1].sale_code = int(i["sale_code"])
   print(f"GUI loop, ", sale_list, type(sale_list))
   return sale_list
 
@@ -522,21 +517,23 @@ def create_payment_method_card() -> object:
 def create_sale(user_list, property_list, payment_list) -> object:
   sale: object = None
 
-  client_dict = {}
-  broker_dict = {}
-  property_dict = {}
-  payment_dict = {}
+  client_dict: dict = {}
+  broker_dict: dict  = {}
+  property_dict: dict  = {}
+  payment_dict: dict  = {}
 
   for i in user_list:
     if isinstance(i, UserClient):
-      client_dict[i.name] = i
+      client_dict[i.user_code] = i
     else:
-      broker_dict[i.name] = i
+      broker_dict[i.user_code] = i
 
   for i in property_list:
-    property_dict[i.address] = i
+    property_dict[i.property_code] = i
   for i in payment_list:
     payment_dict[i.payment_code] = i
+
+  print(payment_dict)
 
   layout = [
     [sg.Text('Cliente:', pad=(5, 5), size=(20, 1)), sg.Combo(list(client_dict), size=(48, 1))],
@@ -544,7 +541,7 @@ def create_sale(user_list, property_list, payment_list) -> object:
     [sg.Text('Imóvel:', pad=(5, 5), size=(20, 1)), sg.Combo(list(property_dict), size=(48, 1))],
     [sg.Text('Data da Venda:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(48, 1))],
     [sg.Text('Valor da Venda:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(48, 1))],
-    [sg.Text('Tipo de Pagamento:', pad=(5, 5), size=(20, 1)), sg.Combo(list(payment_dict), size=(48, 1))],
+    [sg.Text('Pagamento:', pad=(5, 5), size=(20, 1)), sg.Combo(list(payment_dict), size=(48, 1))],
 
     [sg.Button('Criar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
   ]
@@ -558,21 +555,11 @@ def create_sale(user_list, property_list, payment_list) -> object:
       break
     if event == "Criar":
       print(values)
-      client_sale: object = None
-      broker_sale: object = None
-      property_sale: object = None
-      payment_sale: object = None
-      for client in user_list:
-        if client.name == str(values[0]):
-          client_sale = client
-        elif client.name == str(values[1]):
-          broker_sale = client
-      for property in property_list:
-        if property.name == str(values[2]):
-          property_sale = property
-      for payment in payment_list:
-        if payment.payment_type == str(values[3]):
-          payment_sale = payment
+      client_sale: object = client_dict[int(values[0])]
+      broker_sale: object = broker_dict[int(values[1])]
+      property_sale: object = property_dict[int(values[2])]
+      payment_sale: object = payment_dict[int(values[5])]
+
       sale = Sale(
         client_sale,
         broker_sale,
@@ -585,3 +572,4 @@ def create_sale(user_list, property_list, payment_list) -> object:
       print(f"GUI loop, ", type(sale))
       return sale
   window.close()
+# FIM Lógica de criação de objetos

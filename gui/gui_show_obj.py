@@ -945,7 +945,7 @@ def show_all_sales_and_profit_month_only(obj_list: list, date: str) -> True:
         ])
         Col.append([
           sg.Text('Imóvel:', pad=(5, 5), size=(20, 1)),  # Label
-          sg.Text(str(o.address), pad=(5, 5), size=(45, 1))  # Valor do obj.
+          sg.Text(str(o.sale_property.address), pad=(5, 5), size=(45, 1))  # Valor do obj.
         ])
         Col.append([
           sg.Text('Data da venda:', pad=(5, 5), size=(20, 1)),  # Label
@@ -959,8 +959,8 @@ def show_all_sales_and_profit_month_only(obj_list: list, date: str) -> True:
           sg.Text('Forma de pagamento:', pad=(5, 5), size=(20, 1)),  # Label
           sg.Text(str(o.payment_method.payment_type), pad=(5, 5), size=(45, 1))  # Valor do obj.
         ])
+        profits += o.total_sale_value
       Col.append([sg.HSeparator()])
-      profits += o.total_sale_value
   Col.append([sg.HSeparator()])
   Col.append([
     sg.Text('Lucro total:', pad=(5, 5), size=(20, 1)),  # Label
@@ -973,7 +973,7 @@ def show_all_sales_and_profit_month_only(obj_list: list, date: str) -> True:
   layout.append(
     [sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
-  window = sg.Window("Mostrando Todoas as vendas e lucro total", layout, element_justification='c', resizable=True,
+  window = sg.Window("Mostrando todas as vendas e lucro total", layout, element_justification='c', resizable=True,
                      finalize=True,
                      modal=True)
   window.TKroot.minsize(320, 240)
@@ -984,12 +984,11 @@ def show_all_sales_and_profit_month_only(obj_list: list, date: str) -> True:
   window.close()
 
 def show_all_sales_and_profit_month(obj_list) -> object:
-  payment: object = None
   layout = [
     [sg.Text('Digite uma data válida:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
     [sg.Button('Mostrar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
   ]
-  window = sg.Window("Criar Pagamento Dinheiro", layout, element_justification='c', resizable=True, margins=(5, 5))
+  window = sg.Window("Mostrar vendas e lucro em data", layout, element_justification='c', resizable=True, margins=(5, 5))
   while True:
     event, values = window.read(close=True)
     if values is not None:
@@ -1000,6 +999,7 @@ def show_all_sales_and_profit_month(obj_list) -> object:
         break
       if event == "Mostrar":
         show_all_sales_and_profit_month_only(obj_list, str(values[0]))
+        break
   window.close()
 
 # FIM Mostrar Objetos

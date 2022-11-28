@@ -35,7 +35,7 @@ class Sale:
     return self.__sale_code
 
   @sale_code.setter
-  def insurance_code(self, value: int):
+  def sale_code(self, value: int):
     self.__sale_code = value
     pass
 
@@ -93,6 +93,11 @@ class Sale:
     self.__payment_method = value
     pass
 
+  def print_info(self):
+    print([self.sale_code, self.client.name, self.broker.name, 
+      self.sale_property.address, self.sale_date, 
+      self.total_sale_value, self.payment_method.payment_code])
+
   def print_obj(self):
     self._layout = [
       [sg.Text(self.sale_code)],
@@ -113,7 +118,7 @@ class Sale:
     pass
 
   def save_json_file(self):
-    filename = '../../files/sale_data.json'
+    filename = r'../../files/sale_data.json'
     if path.isfile(filename) is False:
       raise Exception("File not found")
     # Lendo o arquivo json

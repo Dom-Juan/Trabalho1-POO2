@@ -1,5 +1,16 @@
 [
     {
-        "payment_code": "0"
+        "type": "money",
+        "payment_type": "money",
+        "charge": 120000,
+        "payment_code": 123123123123123123123123123123123123123
+    },
+    {
+    	"type": "card",
+        "payment_type": "card",
+        "card_name": "JOSE CARLOS SILVA",
+        "flag": "viza",
+        "number": "1232432443212343",
+        "payment_code": 323323323323323323323323323323323323323
     }
 ]

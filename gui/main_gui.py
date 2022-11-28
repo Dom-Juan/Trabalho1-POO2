@@ -4,7 +4,8 @@ import pyglet
 
 from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
   create_insurance, create_payment_method_card, create_payment_method_money, create_sale
-from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_sales, load_file_gui_users
+from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_users, load_file_gui_payment, \
+  load_file_gui_sales
 from gui.gui_show_obj import show_all_insurance, show_all_payment_methods, show_ap_property, show_comercial_property, \
   show_home_property, show_all_property, show_users_broker, show_users_client, show_all_sales_and_profit, \
   show_all_sales_and_profit_month
@@ -56,16 +57,16 @@ def main_window(name, real_state_company_name):
       sg.Text('Operações Pedidas no PDF.')
     ],
     [
-      sg.Button('Mostar todos Imóveis', size=(25, 2), key='-ALLPROPERTY-'),
+      sg.Button('Mostrar todos Imóveis', size=(25, 2), key='-ALLPROPERTY-'),
     ],
     [
       sg.HSeparator()
     ],
     [
-      sg.Button('Mostar todas as vendas realizadas e o lucro total', size=(50, 2), key='-SHOW ALL SALES AND PROFIT-'),
+      sg.Button('Mostrar todas as vendas realizadas e o lucro total', size=(50, 2), key='-SHOW ALL SALES AND PROFIT-'),
     ],
     [
-      sg.Button('Mostar as vendas em um mês e seu lucro', size=(50, 2), key='- SHOW ALL SALES IN MONTH -'),
+      sg.Button('Mostrar as vendas em um mês e seu lucro', size=(50, 2), key='- SHOW ALL SALES IN MONTH -'),
     ],
     [
       sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))
@@ -82,7 +83,7 @@ def main_window(name, real_state_company_name):
                 'Criar Cliente',
                 'Criar Corretor',
                 'Mostrar todos Clientes',
-                'Mostar todos Corretores',
+                'Mostrar todos Corretores',
                 'Salvar arquivo usuários',
                 'Carregar arquivo usuários'
               ],
@@ -93,9 +94,9 @@ def main_window(name, real_state_company_name):
               'Criar Apartamento',
               'Criar Casa',
               'Criar Comercio',
-              'Mostar todos as Casas',
-              'Mostar todos os Apartamentos',
-              'Mostar todos os Comércios',
+              'Mostrar todos as Casas',
+              'Mostrar todos os Apartamentos',
+              'Mostrar todos os Comércios',
               'Salvar arquivo imoveis',
               'Carregar arquivo imoveis'
             ]
@@ -104,7 +105,7 @@ def main_window(name, real_state_company_name):
             '&Seguro',
             [
               'Criar Seguro',
-              'Mostar Seguros',
+              'Mostrar Seguros',
               'Salvar arquivo do seguro',
               'Carregar arquivo do seguro'
             ]
@@ -115,17 +116,17 @@ def main_window(name, real_state_company_name):
               'Criar Pagamento Dinheiro',
               'Criar Pagamento Cartão',
               'Mostrar todos pagamentos',
-              'Mostar todos pagamentos com Dinheiro',
-              'Mostar todos pagamentos com Cartão',
-              'Carregar arquivo pagamento',
-              'Salvar arquivo pagamento'
+              'Mostrar todos pagamentos com Dinheiro',
+              'Mostrar todos pagamentos com Cartão',
+              'Salvar arquivo pagamento',
+              'Carregar arquivo pagamento'
             ]
           ],
           [
             '&Alugéis',
             [
               'Criar Aluguel',
-              'Mostar todos os alugueis',
+              'Mostrar todos os alugueis',
               'Salvar arquivo aluguel',
               'Carregar arquivo aluguel'
             ]
@@ -134,8 +135,8 @@ def main_window(name, real_state_company_name):
             '&Vendas',
             [
               'Criar Venda',
-              'Mostar todos as vendas',
-              'Salvar arquivo venda',
+              'Mostrar todos as vendas',
+              'Salvar arquivo de vendas',
               'Carregar arquivo de vendas'
             ]
           ],
@@ -165,11 +166,14 @@ def main_window(name, real_state_company_name):
   while True:
     event, values = window.read()
     layout2.append([sg.Text('Resultado'), values])
+
     print(event)
+
     if event in [sg.WIN_CLOSE_ATTEMPTED_EVENT, 'Sair']:
       break
     if event == "Botão da Sara":
       janela = 1 # colocar a função da janela em que sera editada.
+
     # Lógica de criação dos objetos.
     if event == "Criar Cliente":
       obj = create_client()
@@ -212,31 +216,33 @@ def main_window(name, real_state_company_name):
       obj = create_sale(real_state_company.users, real_state_company.real_state_properties, payment_list)
       if obj is not None:
         real_state_company.add_sales(obj)
+
     # Lógica de mostrar info dos objetos.
     if event == "Mostrar todos Clientes":
       show_users_client(real_state_company.users)
     if event == "Mostar todos Corretores":
       show_users_broker(real_state_company.users)
-    if event in ['Mostar todos os Imóveis', '-ALLPROPERTY-']:
+    if event in ['Mostrar todos os Imóveis', '-ALLPROPERTY-']:
       show_all_property(real_state_company.real_state_properties)
-    if event == 'Mostar todos as Casas':
+    if event == 'Mostrar todos as Casas':
       show_home_property(real_state_company.real_state_properties)
-    if event in ['Mostar todos os Apartamentos', '-ALLPROPERTYAPARTMENT-']:
+    if event in ['Mostrar todos os Apartamentos', '-ALLPROPERTYAPARTMENT-']:
       show_ap_property(real_state_company.real_state_properties)
-    if event in ['Mostar todos os Comércios', '-ALLPROPERTYCOMERCIAL-']:
+    if event in ['Mostrar todos os Comércios', '-ALLPROPERTYCOMERCIAL-']:
       show_comercial_property(real_state_company.real_state_properties)
     if event in ['Mostrar todos pagamentos']:
       show_all_payment_methods(payment_list)
-    if event == "Mostar Seguros":
+    if event == "Mostrar Seguros":
       show_all_insurance(real_state_company.insurance)
-    if event in ['Mostar todas as vendas realizadas e o lucro total', '-SHOW ALL SALES AND PROFIT-']:
+    if event in ['Mostrar todas as vendas realizadas e o lucro total', '-SHOW ALL SALES AND PROFIT-']:
       show_all_sales_and_profit(real_state_company.sales)
-    if event in ['Mostar as vendas em um mês e seu lucro', '- SHOW ALL SALES IN MONTH -']:
+    if event in ['Mostrar as vendas em um mês e seu lucro', '- SHOW ALL SALES IN MONTH -']:
       show_all_sales_and_profit_month(real_state_company.sales)
+
     # Lógicas de carregar arquivos.
     if event == "Carregar arquivo usuários":
       new_user_list: list = load_file_gui_users()
-      if new_user_list is not None:
+      if new_user_list != None:
         for u in new_user_list[:]:
           real_state_company.add_user(u)
         result_window('Arquivo carregado com sucesso!')
@@ -252,12 +258,20 @@ def main_window(name, real_state_company_name):
         for i in new_insurance_list[:]:
           real_state_company.add_insurance(i)
         result_window('Arquivo carregado com sucesso!')
-    if event in ['Carregar arquivo de vendas']:
-      new_sales_list: list = load_file_gui_sales(user_list, property_list, payment_list)
-      if new_sales_list is not None:
-        for s in new_sales_list[:]:
+    if event == 'Carregar arquivo pagamento':
+      new_payment_list: list = load_file_gui_payment()
+      if new_payment_list is not None:
+        for p in new_payment_list[:]:
+          payment_list.append(p)
+        result_window('Arquivo carregado com sucesso!')
+    if event == 'Carregar arquivo de vendas':
+      new_sale_list: list = load_file_gui_sales(real_state_company.users, real_state_company.real_state_properties, 
+                                               payment_list)
+      if new_sale_list is not None:
+        for s in new_sale_list[:]:
           real_state_company.add_sales(s)
         result_window('Arquivo carregado com sucesso!')
+        
     # Lógicas de salvar arquivos.
     if event == "Salvar arquivo usuários":
       for u in real_state_company.users:
