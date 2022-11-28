@@ -17,13 +17,13 @@ sys.path.append('../')
 
 class RentMade:
 
-    def __init__(self, rent_code: int, client: UserClient, broker: UserBroker, property: Property, rent_date: datetime,
+    def __init__(self, rent_code: int, client: UserClient, broker: UserBroker, prop: Property, rent_date: datetime,
                  devolution_date: datetime, payment_date: datetime, total_rent_amount: float, payment_method: Payment,
                  insurance_hired: list, paid: bool):
         self._rent_code: int = rent_code
         self._client: UserClient = client
         self._broker: UserBroker = broker
-        self._property: Property = property
+        self._prop: Property = prop
         self._rent_date: datetime = rent_date
         self._devolution_date: datetime = devolution_date
         self._payment_date: datetime = payment_date
@@ -58,12 +58,12 @@ class RentMade:
         self._broker = value
 
     @property
-    def property(self):
-        return self._property
+    def prop(self):
+        return self._prop
 
-    @property.setter
-    def property(self, value):
-        self._property = value
+    @prop.setter
+    def prop(self, value):
+        self._prop = value
 
     @property
     def rent_date(self):
@@ -140,7 +140,7 @@ class RentMade:
             [sg.Text(self.rent_code)],
             [sg.Text(self._client)],
             [sg.Text(self._broker)],
-            [sg.Text(self._property)],
+            [sg.Text(self._prop)],
             [sg.Text(self._rent_date)],
             [sg.Text(self._devolution_date)],
             [sg.Text(self._payment_date)],
@@ -171,7 +171,7 @@ class RentMade:
             "_rent_code": self._rent_code,
             "_client": self._client,
             "_broker": self._broker,
-            "_property": self._property,
+            "_prop": self._prop,
             "_rent_date": self._rent_date,
             "_devolution_date": self._devolution_date,
             "_payment_date": self._payment_date,
