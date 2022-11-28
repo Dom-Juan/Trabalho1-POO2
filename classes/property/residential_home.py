@@ -67,6 +67,7 @@ class ResidentialHome(Property):
       "iptu": self.iptu,
       "property_worth": self.property_worth,
       "property_rent": self.property_rent,
+      "sale_made": str(self.sale_made)
     })
     # Verificando JSON atualizado
     print(listObj)

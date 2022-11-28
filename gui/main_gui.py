@@ -1,13 +1,19 @@
-import PySimpleGUI as sg
-import sys
-import pyglet
+import PySimpleGUI as sg    # Interface.
+import sys                  # Sistema.
+import pyglet               # Helper para ajudar nos arquivos.
+import ctypes               # Tipos da linguagem C.
+import platform             # Biblioteca de paltaforma.
 
 from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
   create_insurance, create_payment_method_card, create_payment_method_money, create_sale
 from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_users, load_file_gui_payment, \
   load_file_gui_sales
-from gui.gui_show_obj import show_all_insurance, show_all_payment_methods, show_ap_property, show_comercial_property, \
-  show_home_property, show_all_property, show_users_broker, show_users_client, show_all_sales_and_profit, \
+from gui.gui_show_obj import show_all_insurance, show_all_payment_card, show_all_payment_methods, \
+  show_all_payment_money, show_ap_property, \
+  show_comercial_property, \
+  show_home_property, show_all_property, show_properties_not_sold, show_properties_sales, show_users_broker, \
+  show_users_client, \
+  show_all_sales_and_profit, \
   show_all_sales_and_profit_month
 
 # import de classes
@@ -30,6 +36,8 @@ def result_window(text) -> None:
 
 # Janela principal.
 def main_window(name, real_state_company_name):
+  if int(platform.release()) >= 8:
+    ctypes.windll.shcore.SetProcessDpiAwareness(True)
   # Instanciando a imobiliária
   user_list: list = list()
   property_list: list = list()
@@ -136,6 +144,9 @@ def main_window(name, real_state_company_name):
             [
               'Criar Venda',
               'Mostrar todos as vendas',
+              'Mostrar as vendas em um mês e seu lucro',
+              'Mostrar imóveis vendidos',
+              'Mostrar imóveis não vendidos',
               'Salvar arquivo de vendas',
               'Carregar arquivo de vendas'
             ]
@@ -216,7 +227,9 @@ def main_window(name, real_state_company_name):
       obj = create_sale(real_state_company.users, real_state_company.real_state_properties, payment_list)
       if obj is not None:
         real_state_company.add_sales(obj)
-
+        for i in range(len(real_state_company.real_state_properties)):
+          if obj.sale_property.property_code == real_state_company.real_state_properties[i].property_code:
+            real_state_company[i].sale_made = True
     # Lógica de mostrar info dos objetos.
     if event == "Mostrar todos Clientes":
       show_users_client(real_state_company.users)
@@ -232,13 +245,22 @@ def main_window(name, real_state_company_name):
       show_comercial_property(real_state_company.real_state_properties)
     if event in ['Mostrar todos pagamentos']:
       show_all_payment_methods(payment_list)
+    if event in ['Mostrar todos pagamentos com Dinheiro']:
+      show_all_payment_money(payment_list)
+    if event in ['Mostrar todos pagamentos com Cartão']:
+      show_all_payment_card(payment_list)
     if event == "Mostrar Seguros":
       show_all_insurance(real_state_company.insurance)
     if event in ['Mostrar todas as vendas realizadas e o lucro total', '-SHOW ALL SALES AND PROFIT-']:
       show_all_sales_and_profit(real_state_company.sales)
     if event in ['Mostrar as vendas em um mês e seu lucro', '- SHOW ALL SALES IN MONTH -']:
       show_all_sales_and_profit_month(real_state_company.sales)
-
+    if event in ['Mostrar imóveis vendidos']:
+      show_properties_sales(real_state_company.sales)
+    if event in ['Mostrar imóveis não vendidos']:
+      show_properties_not_sold(real_state_company.real_state_properties)
+    if event in ['Mostrar imóveis vendidos para um cliente']:
+      show_properties_sold_to_client(real_state_company.sales)
     # Lógicas de carregar arquivos.
     if event == "Carregar arquivo usuários":
       new_user_list: list = load_file_gui_users()

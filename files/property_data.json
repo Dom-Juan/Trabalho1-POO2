@@ -13,7 +13,8 @@
         "property_worth": "150000",
         "property_rent": "5000",
         "floor": "3",
-        "apartment_value": "1000000"
+        "apartment_value": "1000000",
+        "sale_made": "False"
     },
     {
         "type": "residential_home",
@@ -27,7 +28,8 @@
         "num_spots_garage": "1",
         "iptu": "2500",
         "property_worth": "110000",
-        "property_rent": "2000"
+        "property_rent": "2000",
+        "sale_made": "False"
     },
     {
         "type": "comercial",
@@ -42,6 +44,7 @@
         "iptu": "1800",
         "property_worth": "160000",
         "property_rent": "4000",
-        "federal_tax": "1800"
+        "federal_tax": "1800",
+        "sale_made": "False"
     }
 ]

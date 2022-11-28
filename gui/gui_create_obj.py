@@ -16,6 +16,11 @@ from classes.property.comercial import Comercial
 from classes.sales.sales import Sale
 from helpers.helper import check_if_all_none, check_if_all_empty
 
+# Converte STR para boolean
+def str2bool(v):
+  return v.lower() in ("yes", "true", "t", "1")
+
+
 # Mensagem de sucesso
 def result_window(text) -> None:
   layout = [
@@ -112,6 +117,7 @@ def create_property_from_file(list_obj) -> list:
         float(data["apartment_value"]),
       )
       prop.property_code = data["property_code"]
+      prop.sale_made = str2bool(data["sale_made"])
     elif data["type"] == "residential_home":
       prop = ResidentialHome(
         data["address"],
@@ -126,6 +132,7 @@ def create_property_from_file(list_obj) -> list:
         float(data["property_rent"]),
       )
       prop.property_code = data["property_code"]
+      prop.sale_made = str2bool(data["sale_made"])
     elif data["type"] == "comercial":
       prop = Comercial(
         data["address"],
@@ -141,6 +148,7 @@ def create_property_from_file(list_obj) -> list:
         float(data["federal_tax"])
       )
       prop.property_code = data["property_code"]
+      prop.sale_made = str2bool(data["sale_made"])
     else:
       print("> ERROR - TIPO NÃO IDENTIFICADO!")
     loaded_property_from_file.append(prop)
@@ -197,13 +205,13 @@ def create_sale_from_file(obj_list: list, user_list: list, property_list: list, 
   print(obj_list)
   for i in obj_list:
     client_sale = find_user(i["client"], user_list)
-    if client_sale != None and isinstance(client_sale, UserClient):
+    if client_sale is not None and isinstance(client_sale, UserClient):
       broker_sale = find_user(i["broker"], user_list)
-      if broker_sale != None and isinstance(broker_sale, UserBroker):
+      if broker_sale is not None and isinstance(broker_sale, UserBroker):
         property_sale = find_property(i["sale_property"], property_list)
-        if property_sale != None:
+        if property_sale is not None:
           payment_sale = find_payment(i["payment_code"], payment_list)
-          if payment_sale != None:
+          if payment_sale is not None:
             sale_list.append(Sale(
             client_sale,
             broker_sale,
@@ -213,6 +221,7 @@ def create_sale_from_file(obj_list: list, user_list: list, property_list: list, 
             payment_sale
             ))
             sale_list[-1].sale_code = int(i["sale_code"])
+            sale_list[-1].property.sale_made = True
   print(f"GUI loop, ", sale_list, type(sale_list))
   return sale_list
 

@@ -78,7 +78,8 @@ class Comercial(Property):
       "iptu": self.iptu,
       "property_worth": self.property_worth,
       "property_rent": self.property_rent,
-      "federal_tax": self.federal_tax
+      "federal_tax": self.federal_tax,
+      "sale_made": str(self.sale_made)
     })
     # Verificando JSON atualizado
     print(listObj)
