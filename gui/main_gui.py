@@ -17,7 +17,8 @@ from gui.gui_show_obj import show_all_insurance, show_all_payment_card, show_all
     show_all_sales_and_profit, \
     show_all_sales_and_profit_month, \
     show_properties_sold_to_client, \
-    show_late_rent
+    show_late_rent, \
+    show_best_broker_by_month_prompt
 
 # import de classes
 sys.path.append('../')
@@ -97,6 +98,7 @@ def main_window(name, real_state_company_name):
                             'Criar Corretor',
                             'Mostrar todos Clientes',
                             'Mostrar todos Corretores',
+                            'Mostrar funcionário do mês',
                             'Salvar arquivo usuários',
                             'Carregar arquivo usuários'
                         ],
@@ -247,6 +249,8 @@ def main_window(name, real_state_company_name):
             show_users_client(real_state_company.users)
         if event == "Mostrar todos Corretores":
             show_users_broker(real_state_company.users)
+        if event == "Mostrar funcionário do mês":
+            show_best_broker_by_month_prompt(real_state_company.rentals, real_state_company.sales)
         if event in ['Mostrar todos os Imóveis', '-ALLPROPERTY-']:
             show_all_property(real_state_company.real_state_properties)
         if event == 'Mostrar todos as Casas':
