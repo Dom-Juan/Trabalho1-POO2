@@ -73,7 +73,8 @@ class ResidentialApartment(Property):
       "property_rent": self.property_rent,
       "floor": self.floor,
       "apartment_value": self.apartment_value,
-      "sale_made": str(self.sale_made)
+      "sale_made": str(self.sale_made),
+      "rental_made": str(self.rental_made)
     })
     # Verificando JSON atualizado
     print(listObj)

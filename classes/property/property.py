@@ -25,6 +25,16 @@ class Property:
     self._property_worth: float = property_worth
     self._property_rent: float = property_rent
     self._sale_made = False
+    self._rental_made = False
+
+  @property
+  def rental_made(self):
+    return self._sale_made
+
+  @rental_made.setter
+  def rental_made(self, value):
+    self._sale_made = value
+    pass
 
   @property
   def sale_made(self):

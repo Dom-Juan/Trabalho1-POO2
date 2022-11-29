@@ -137,6 +137,7 @@ def create_property_from_file(list_obj) -> list:
             )
             prop.property_code = data["property_code"]
             prop.sale_made = str2bool(data["sale_made"])
+            prop.rental_made: str2bool(data["rental_made"])
         elif data["type"] == "residential_home":
             prop = ResidentialHome(
                 data["address"],
@@ -152,6 +153,7 @@ def create_property_from_file(list_obj) -> list:
             )
             prop.property_code = data["property_code"]
             prop.sale_made = str2bool(data["sale_made"])
+            prop.rental_made: str2bool(data["rental_made"])
         elif data["type"] == "comercial":
             prop = Comercial(
                 data["address"],
@@ -168,6 +170,7 @@ def create_property_from_file(list_obj) -> list:
             )
             prop.property_code = data["property_code"]
             prop.sale_made = str2bool(data["sale_made"])
+            prop.rental_made: str2bool(data["rental_made"])
         else:
             print("> ERROR - TIPO NÃO IDENTIFICADO!")
         loaded_property_from_file.append(prop)
