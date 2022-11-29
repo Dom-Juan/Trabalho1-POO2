@@ -137,6 +137,7 @@ def create_property_from_file(list_obj) -> list:
             )
             prop.property_code = data["property_code"]
             prop.sale_made = str2bool(data["sale_made"])
+            prop.rental_made: str2bool(data["rental_made"])
         elif data["type"] == "residential_home":
             prop = ResidentialHome(
                 data["address"],
@@ -152,6 +153,7 @@ def create_property_from_file(list_obj) -> list:
             )
             prop.property_code = data["property_code"]
             prop.sale_made = str2bool(data["sale_made"])
+            prop.rental_made: str2bool(data["rental_made"])
         elif data["type"] == "comercial":
             prop = Comercial(
                 data["address"],
@@ -168,6 +170,7 @@ def create_property_from_file(list_obj) -> list:
             )
             prop.property_code = data["property_code"]
             prop.sale_made = str2bool(data["sale_made"])
+            prop.rental_made: str2bool(data["rental_made"])
         else:
             print("> ERROR - TIPO NÃO IDENTIFICADO!")
         loaded_property_from_file.append(prop)
@@ -242,7 +245,7 @@ def create_sale_from_file(obj_list: list, user_list: list, property_list: list, 
                             payment_sale
                         ))
                         sale_list[-1].sale_code = int(i["sale_code"])
-                        sale_list[-1].property.sale_made = True
+                        sale_list[-1].sale_property.sale_made = True
     print(f"GUI loop, ", sale_list, type(sale_list))
     return sale_list
 

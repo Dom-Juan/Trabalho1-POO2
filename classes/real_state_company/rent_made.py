@@ -17,18 +17,18 @@ sys.path.append('../')
 
 class RentMade:
 
-    def __init__(self, rent_code: int, client: UserClient, broker: UserBroker, prop: Property, rent_date: datetime,
+    def __init__(self, rent_code: int, client: object, broker: object, prop: object, rent_date: datetime,
                  devolution_date: datetime, payment_date: datetime, total_rent_amount: float, payment_method: Payment,
                  insurance_hired: list, paid: bool):
         self._rent_code: int = rent_code
-        self._client: UserClient = client
-        self._broker: UserBroker = broker
-        self._prop: Property = prop
+        self._client: object = client
+        self._broker: object = broker
+        self._prop: object = prop
         self._rent_date: datetime = rent_date
         self._devolution_date: datetime = devolution_date
         self._payment_date: datetime = payment_date
         self._total_rent_amount: float = total_rent_amount
-        self._payment_method: Payment = payment_method
+        self._payment_method: object = payment_method
         self._insurance_hired: list = insurance_hired
         self._paid: bool = paid
         self._layout = []

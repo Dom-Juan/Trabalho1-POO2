@@ -4,7 +4,6 @@ import pyglet  # Helper para ajudar nos arquivos.
 import ctypes  # Tipos da linguagem C.
 import platform  # Biblioteca de paltaforma.
 
-from classes.user.user_client import UserClient
 from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
     create_insurance, create_payment_method_card, create_payment_method_money, create_sale, create_rent
 from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_users, \
@@ -169,6 +168,7 @@ def main_window(name, real_state_company_name):
                             'Mostrar as vendas em um mês e seu lucro',
                             'Mostrar imóveis vendidos',
                             'Mostrar imóveis não vendidos',
+                            'Mostrar imóveis vendidos para um cliente',
                             'Salvar arquivo de vendas',
                             'Carregar arquivo de vendas'
                         ]
@@ -260,7 +260,7 @@ def main_window(name, real_state_company_name):
         # Lógica de mostrar info dos objetos.
         if event == "Mostrar todos Clientes":
             show_users_client(real_state_company.users)
-        if event == "Mostar todos Corretores":
+        if event == "Mostrar todos Corretores":
             show_users_broker(real_state_company.users)
         if event in ['Mostrar todos os Imóveis', '-ALLPROPERTY-']:
             show_all_property(real_state_company.real_state_properties)
@@ -278,6 +278,8 @@ def main_window(name, real_state_company_name):
             show_all_payment_card(payment_list)
         if event == "Mostrar Seguros":
             show_all_insurance(real_state_company.insurance)
+        if event == "Mostrar todos alugueis com atraso":
+            show_late_rent(real_state_company.rentals)
         if event in ['Mostrar todas as vendas realizadas e o lucro total', '-SHOW ALL SALES AND PROFIT-']:
             show_all_sales_and_profit(real_state_company.sales)
         if event in ['Mostrar as vendas em um mês e seu lucro', '- SHOW ALL SALES IN MONTH -']:
