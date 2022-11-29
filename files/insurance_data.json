@@ -6,5 +6,21 @@
         "insurance_type": "AAAAAAAAAA",
         "insurance_desc": "AAAAAAAAAAAA",
         "insurance_value": 1.0
+    },
+    {
+        "type": "insurance",
+        "insurance_code": 39107980108487207534463118099972839994,
+        "insurance_name": "AA",
+        "insurance_type": "AAAAAAAAAA",
+        "insurance_desc": "AAAAAAAAAAAA",
+        "insurance_value": 1.0
+    },
+    {
+        "type": "insurance",
+        "insurance_code": 100520581720969309236292281953868536378,
+        "insurance_name": "Seguradora Normal Prudentina",
+        "insurance_type": "Apartamento",
+        "insurance_desc": "Anti roubo",
+        "insurance_value": 600.0
     }
 ]

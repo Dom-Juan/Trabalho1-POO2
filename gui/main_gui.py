@@ -72,7 +72,7 @@ def main_window(name, real_state_company_name):
             sg.Text('Guilherme Luis Di Giorgi - 211250767'),
         ],
         [
-            sg.Text('Sara Albuquerque - ')
+            sg.Text('Sara Albuquerque - 181254808')
         ],
         [
             sg.Text('Juan Cardoso da Silva - 171257138'),
