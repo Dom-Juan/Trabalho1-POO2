@@ -4,6 +4,7 @@ import pyglet  # Helper para ajudar nos arquivos.
 import ctypes  # Tipos da linguagem C.
 import platform  # Biblioteca de paltaforma.
 
+from classes.user.user_client import UserClient
 from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
     create_insurance, create_payment_method_card, create_payment_method_money, create_sale, create_rent
 from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_users, \
@@ -25,7 +26,7 @@ from gui.gui_show_obj import show_all_insurance, show_all_payment_card, show_all
     show_ative_home_rentals, \
     show_ative_apartment_rentals, \
     show_ative_comercial_rentals, \
-    show_inative_rentals
+    show_inative_rentals, show_late_rent
 
 # import de classes
 sys.path.append('../')

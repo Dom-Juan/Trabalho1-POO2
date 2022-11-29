@@ -1471,6 +1471,88 @@ def show_late_rent(rent_list: list) -> object:
         break
     window.close()
 
+def show_late_rentals_clients(rental_list: list):
+    Col: list = []
+    users: list = []
+    for r in rental_list:
+        if r.is_late:
+            users.append(r.client)
+    for user in users:
+        if user is not None:
+            if isinstance(user, UserClient):
+                # layout da página.
+                Col.append([sg.HSeparator()])
+                Col.append([
+                    sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
+                    sg.Text(str(user.user_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+                ])
+                Col.append(
+                    [
+                        sg.Text('Nome: ', pad=(5, 5), size=(20, 1)),
+                        sg.Text(str(user.name), pad=(5, 5), size=(45, 1))
+                    ]
+                )
+                Col.append(
+                    [
+                        sg.Text('CPF:', pad=(5, 5), size=(20, 1)),
+                        sg.Text(str(user.cpf), pad=(5, 5), size=(45, 1))
+                    ]
+                )
+                Col.append(
+                    [
+                        sg.Text('RG:', pad=(5, 5), size=(20, 1)),
+                        sg.Text(str(user.rg), pad=(5, 5), size=(45, 1))
+                    ]
+                )
+                Col.append(
+                    [
+                        sg.Text('Ano de nascimento:', pad=(5, 5), size=(20, 1)),
+                        sg.Text(str(user.anniversary_date), pad=(5, 5), size=(45, 1))
+                    ]
+                )
+                Col.append(
+                    [
+                        sg.Text('Endereço:', pad=(5, 5), size=(20, 1)),
+                        sg.Text(str(user.address), pad=(5, 5), size=(45, 1))
+                    ]
+                )
+                Col.append(
+                    [
+                        sg.Text('CEP:', pad=(5, 5), size=(20, 1)),
+                        sg.Text(str(user.cep), pad=(5, 5), size=(45, 1))
+                    ]
+                )
+                Col.append(
+                    [
+                        sg.Text('Telefone:', pad=(5, 5), size=(20, 1)),
+                        sg.Text(str(user.phone), pad=(5, 5), size=(45, 1))
+                    ]
+                )
+                Col.append(
+                    [
+                        sg.Text('Email:', pad=(5, 5), size=(20, 1)),
+                        sg.Text(str(user.email), pad=(5, 5), size=(45, 1))
+                    ]
+                )
+                Col.append(
+                    [
+                        sg.Text('Data de registro:', pad=(5, 5), size=(20, 1)),
+                        sg.Text(str(user.register_date), pad=(5, 5), size=(45, 1))
+                    ]
+                )
+                Col.append([sg.HSeparator()])
+    layout = [[sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))],
+              [sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)],
+              [sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))]]
+    window = sg.Window("Mostrando Clientes em atraso", layout, element_justification='c', resizable=True, finalize=True,
+                       modal=True)
+    window.TKroot.minsize(320, 240)
+    while True:
+        event, values = window.read(close=True)
+        if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+            break
+    window.close()
+
 
 def show_late_rentals_properties(rental_list: list):
     Col: list = []
