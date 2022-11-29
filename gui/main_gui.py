@@ -106,6 +106,7 @@ def main_window(name, real_state_company_name):
                             'Criar Corretor',
                             'Mostrar todos Clientes',
                             'Mostrar todos Corretores',
+                            'Mostrar funcionário do mês',
                             'Salvar arquivo usuários',
                             'Carregar arquivo usuários'
                         ],
@@ -263,6 +264,8 @@ def main_window(name, real_state_company_name):
             show_users_client(real_state_company.users)
         if event == "Mostrar todos Corretores":
             show_users_broker(real_state_company.users)
+        if event == "Mostrar funcionário do mês":
+            show_best_broker_by_month_prompt(real_state_company.rentals, real_state_company.sales)
         if event in ['Mostrar todos os Imóveis', '-ALLPROPERTY-']:
             show_all_property(real_state_company.real_state_properties)
         if event == 'Mostrar todos as Casas':

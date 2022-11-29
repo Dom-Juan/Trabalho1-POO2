@@ -1253,7 +1253,7 @@ def show_all_sales_and_profit_month_only(obj_list: list, date: str) -> True:
 
 def show_all_sales_and_profit_month(obj_list) -> object:
   layout = [
-    [sg.Text('Digite um mês válido (mm/aaaa):', pad=(5, 5), size=(40, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Digite um mês válido (mm/aaaa):', pad=(5, 5), size=(30, 1)), sg.InputText(size=(32, 1))],
     [sg.Button('Mostrar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
   ]
   window = sg.Window("Mostrar vendas e lucro em data", layout, element_justification='c', resizable=True, margins=(5, 5))
