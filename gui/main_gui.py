@@ -15,7 +15,8 @@ from gui.gui_show_obj import show_all_insurance, show_all_payment_card, show_all
     show_home_property, show_all_property, show_properties_not_sold, show_properties_sales, show_users_broker, \
     show_users_client, \
     show_all_sales_and_profit, \
-    show_all_sales_and_profit_month
+    show_all_sales_and_profit_month, \
+    show_properties_sold_to_client
 
 # import de classes
 sys.path.append('../')
@@ -321,6 +322,10 @@ def main_window(name, real_state_company_name):
         if event in ["Salvar arquivo do seguro", '-SAVEALLINSURANCE-']:
             for i in real_state_company.insurance:
                 i.save_json_file()
+            result_window('Arquivo salvo com sucesso!')
+        if event == "Salvar arquivo aluguel":
+            for r in real_state_company.rentals:
+                r.save_json_file()
             result_window('Arquivo salvo com sucesso!')
         if event in ['Salvar arquivo da imobiliaria', '-SAVEALREALSTATECOMPANY-']:
             real_state_company.save_json_file()
