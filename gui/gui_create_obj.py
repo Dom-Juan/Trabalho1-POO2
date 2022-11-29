@@ -245,7 +245,7 @@ def create_sale_from_file(obj_list: list, user_list: list, property_list: list, 
                             payment_sale
                         ))
                         sale_list[-1].sale_code = int(i["sale_code"])
-                        sale_list[-1].property.sale_made = True
+                        sale_list[-1].sale_property.sale_made = True
     print(f"GUI loop, ", sale_list, type(sale_list))
     return sale_list
 
