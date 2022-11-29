@@ -4,6 +4,7 @@ import pyglet  # Helper para ajudar nos arquivos.
 import ctypes  # Tipos da linguagem C.
 import platform  # Biblioteca de paltaforma.
 
+from classes.user.user_client import UserClient
 from gui.gui_create_obj import create_client, create_broker, create_comercial, create_apartment, create_house, \
     create_insurance, create_payment_method_card, create_payment_method_money, create_sale, create_rent
 from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, load_file_gui_users, \
@@ -16,7 +17,16 @@ from gui.gui_show_obj import show_all_insurance, show_all_payment_card, show_all
     show_users_client, \
     show_all_sales_and_profit, \
     show_all_sales_and_profit_month, \
-    show_properties_sold_to_client
+    show_properties_sold_to_client, \
+    show_all_rentals, \
+    show_late_rentals_clients, \
+    show_late_rentals_properties, \
+    show_rentals_by_client, \
+    show_ative_rentals, \
+    show_ative_home_rentals, \
+    show_ative_apartment_rentals, \
+    show_ative_comercial_rentals, \
+    show_inative_rentals
 
 # import de classes
 sys.path.append('../')
@@ -139,6 +149,14 @@ def main_window(name, real_state_company_name):
                         [
                             'Criar Aluguel',
                             'Mostrar todos os alugueis',
+                            'Mostrar clientes em atraso',
+                            'Mostrar imóveis em atraso',
+                            'Mostrar alugueis por cliente',
+                            'Mostrar alugueis em vigor',
+                            'Mostrar casas com aluguel em vigor'
+                            'Mostrar apartamentos com aluguel em vigor',
+                            'Mostrar imoveis comerciais com aluguel em vigor',
+                            'Mostrar alugueis finalizados',
                             'Salvar arquivo aluguel',
                             'Carregar arquivo aluguel'
                         ]
@@ -270,6 +288,41 @@ def main_window(name, real_state_company_name):
             show_properties_not_sold(real_state_company.real_state_properties)
         if event in ['Mostrar imóveis vendidos para um cliente']:
             show_properties_sold_to_client(real_state_company.sales)
+        if event in ['Mostrar todos os alugueis']:
+            show_all_rentals(real_state_company.rentals)
+        if event in ['Mostrar clientes em atraso']:
+            show_late_rentals_clients(real_state_company.rentals)
+        if event in ['Mostrar imóveis em atraso']:
+            show_late_rentals_properties(real_state_company.rentals)
+        if event in ['Mostrar alugueis por cliente']:
+            client_dict: dict = {}
+            for i in user_list:
+                if isinstance(i, UserClient):
+                    client_dict[i.user_code] = i
+            layout = [
+                [sg.Text('Cliente:', pad=(5, 5), size=(20, 1)), sg.Combo(list(client_dict), size=(48, 1))],
+                [sg.Button('Buscar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
+            ]
+            window = sg.Window("Mostrar alugueis por cliente", layout, element_justification='c', resizable=True, margins=(5, 5))
+            while True:
+                event, values = window.read(close=True)
+                if '' in values or None in values:
+                    result_window('Para prosseguir, é necessário que o cliente seja selecionado')
+                    break
+                if event in ["Exit", sg.WIN_CLOSED]:
+                    break
+                if event == "Buscar":
+                    show_rentals_by_client(real_state_company.rentals, client_dict[int(values[0])])
+        if event in ['Mostrar alugueis em vigor']:
+            show_ative_rentals(real_state_company.rentals)
+        if event in ['Mostrar casas com aluguel em vigor']:
+            show_ative_home_rentals(real_state_company.rentals)
+        if event in ['Mostrar apartamentos com aluguel em vigor']:
+            show_ative_apartment_rentals(real_state_company.rentals)
+        if event in ['Mostrar imoveis comerciais com aluguel em vigor']:
+            show_ative_comercial_rentals(real_state_company.rentals)
+        if event in ['Mostrar alugueis finalizados']:
+            show_inative_rentals(real_state_company.rentals)
         # Lógicas de carregar arquivos.
         if event == "Carregar arquivo usuários":
             new_user_list: list = load_file_gui_users()
