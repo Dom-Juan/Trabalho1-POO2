@@ -10,15 +10,14 @@ from gui.gui_load_obj import load_file_gui_insurance, load_file_gui_property, lo
     load_file_gui_payment, \
     load_file_gui_sales, load_file_gui_rent
 from gui.gui_show_obj import show_all_insurance, show_all_payment_card, show_all_payment_methods, \
-    show_all_payment_money, show_ap_property, \
+    show_all_payment_money, show_all_rentals, show_all_sales, show_ap_property, \
     show_comercial_property, \
-    show_home_property, show_all_property, show_properties_not_sold, show_properties_sales, show_users_broker, \
+    show_home_property, show_all_property, show_properties_not_sold, show_properties_rented_to_client, \
+    show_properties_sales, show_users_broker, \
     show_users_client, \
     show_all_sales_and_profit, \
     show_all_sales_and_profit_month, \
-    show_properties_sold_to_client, \
-    show_late_rent, \
-    show_best_broker_by_month_prompt
+    show_properties_sold_to_client
 
 # import de classes
 sys.path.append('../')
@@ -67,20 +66,16 @@ def main_window(name, real_state_company_name):
             sg.HSeparator()
         ],
         [
-            sg.Text('Operações Pedidas no PDF.')
+            sg.Text('Feito por:'),
         ],
         [
-            sg.Button('Mostrar todos Imóveis', size=(25, 2), key='-ALLPROPERTY-'),
+            sg.Text('Guilherme Luis Di Giorgi - 211250767'),
         ],
         [
-            sg.HSeparator()
+            sg.Text('Sara Albuquerque - ')
         ],
         [
-            sg.Button('Mostrar todas as vendas realizadas e o lucro total', size=(50, 2),
-                      key='-SHOW ALL SALES AND PROFIT-'),
-        ],
-        [
-            sg.Button('Mostrar as vendas em um mês e seu lucro', size=(50, 2), key='- SHOW ALL SALES IN MONTH -'),
+            sg.Text('Juan Cardoso da Silva - 171257138'),
         ],
         [
             sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))
@@ -98,7 +93,6 @@ def main_window(name, real_state_company_name):
                             'Criar Corretor',
                             'Mostrar todos Clientes',
                             'Mostrar todos Corretores',
-                            'Mostrar funcionário do mês',
                             'Salvar arquivo usuários',
                             'Carregar arquivo usuários'
                         ],
@@ -141,8 +135,9 @@ def main_window(name, real_state_company_name):
                         '&Alugéis',
                         [
                             'Criar Aluguel',
-                            'Mostrar todos os alugueis',
-                            'Mostrar todos alugueis com atraso',
+                            'Mostrar Alugueis',
+                            'Mostrar imóveis alugados por cliente',
+                            'Mostrar imóveis alugados',
                             'Salvar arquivo aluguel',
                             'Carregar arquivo aluguel'
                         ]
@@ -151,11 +146,11 @@ def main_window(name, real_state_company_name):
                         '&Vendas',
                         [
                             'Criar Venda',
-                            'Mostrar todos as vendas',
+                            'Mostrar Vendas',
                             'Mostrar as vendas em um mês e seu lucro',
                             'Mostrar imóveis vendidos',
                             'Mostrar imóveis não vendidos',
-                            'Mostrar imóveis vendidos para um cliente',
+                            'Mostrar todas as vendas realizadas e o lucro total',
                             'Salvar arquivo de vendas',
                             'Carregar arquivo de vendas'
                         ]
@@ -247,10 +242,8 @@ def main_window(name, real_state_company_name):
         # Lógica de mostrar info dos objetos.
         if event == "Mostrar todos Clientes":
             show_users_client(real_state_company.users)
-        if event == "Mostrar todos Corretores":
+        if event == "Mostar todos Corretores":
             show_users_broker(real_state_company.users)
-        if event == "Mostrar funcionário do mês":
-            show_best_broker_by_month_prompt(real_state_company.rentals, real_state_company.sales)
         if event in ['Mostrar todos os Imóveis', '-ALLPROPERTY-']:
             show_all_property(real_state_company.real_state_properties)
         if event == 'Mostrar todos as Casas':
@@ -267,10 +260,14 @@ def main_window(name, real_state_company_name):
             show_all_payment_card(payment_list)
         if event == "Mostrar Seguros":
             show_all_insurance(real_state_company.insurance)
-        if event == "Mostrar todos alugueis com atraso":
-            show_late_rent(real_state_company.rentals)
         if event in ['Mostrar todas as vendas realizadas e o lucro total', '-SHOW ALL SALES AND PROFIT-']:
             show_all_sales_and_profit(real_state_company.sales)
+        if event in ['Mostrar Alugueis']:
+            show_all_rentals(real_state_company.rentals)
+        if event in ['Mostrar imóveis alugados por cliente']:
+            show_properties_rented_to_client(real_state_company.rentals)
+        if event in ['Mostrar Vendas']:
+            show_all_sales(real_state_company.sales)
         if event in ['Mostrar as vendas em um mês e seu lucro', '- SHOW ALL SALES IN MONTH -']:
             show_all_sales_and_profit_month(real_state_company.sales)
         if event in ['Mostrar imóveis vendidos']:
@@ -305,7 +302,7 @@ def main_window(name, real_state_company_name):
                     payment_list.append(p)
                 result_window('Arquivo carregado com sucesso!')
         if event == 'Carregar arquivo aluguel':
-            new_rent_list: list = load_file_gui_rent()
+            new_rent_list: list = load_file_gui_rent(user_list, property_list, payment_list, insurance_list)
             if new_rent_list is not None:
                 for r in new_rent_list[:]:
                     rental_list.append(r)
@@ -318,7 +315,6 @@ def main_window(name, real_state_company_name):
                 for s in new_sale_list[:]:
                     real_state_company.add_sales(s)
                 result_window('Arquivo carregado com sucesso!')
-
         # Lógicas de salvar arquivos.
         if event == "Salvar arquivo usuários":
             for u in real_state_company.users:

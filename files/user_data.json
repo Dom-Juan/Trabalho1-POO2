@@ -1,18 +1,5 @@
 [
     {
-        "type": "client",
-        "user_code": 3964,
-        "name": "a",
-        "cpf": "a",
-        "rg": "a",
-        "anniversary_date": "06/06/1998",
-        "address": "a",
-        "cep": "a",
-        "phone": "a",
-        "email": "a",
-        "register_date": "03/11/2022"
-    },
-    {
         "type": "broker",
         "user_code": 7901,
         "name": "b",
@@ -27,5 +14,31 @@
         "growf": "b",
         "wage": 15000.0,
         "pis": "b"
+    },
+    {
+        "type": "client",
+        "user_code": 3964,
+        "name": "a",
+        "cpf": "a",
+        "rg": "a",
+        "anniversary_date": "06/06/1998",
+        "address": "a",
+        "cep": "a",
+        "phone": "a",
+        "email": "a",
+        "register_date": "03/11/2022"
+    },
+    {
+        "type": "client",
+        "user_code": 7093,
+        "name": "Juan Abacate Ma\u00e7\u00e3",
+        "cpf": "451.654.654-4",
+        "rg": "55.654.345-1",
+        "anniversary_date": "06/06/1998",
+        "address": "Rua WAAAAAAAgh",
+        "cep": "14580-5",
+        "phone": "11 976740-9560",
+        "email": "juan.abacate@unesp.br",
+        "register_date": "28/11/2022"
     }
 ]

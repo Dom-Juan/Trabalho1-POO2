@@ -1,8 +1,9 @@
 import PySimpleGUI as sg
-import datetime
 import sys
 
 sys.path.append('..\\')
+
+from datetime import datetime
 
 from classes.money.insurance import Insurance
 from classes.money.payment import Payment
@@ -250,25 +251,37 @@ def create_sale_from_file(obj_list: list, user_list: list, property_list: list, 
     return sale_list
 
 
-def create_rent_from_file(list_obj):
+def create_rent_from_file(list_obj: list, user_list: list, property_list: list, payment_list: list, insurance_list: list):
     loaded_rent_from_file: list = []
-    prop: object = None
     print(list_obj)
     for data in list_obj:
-        prop = RentMade(
-            UserClient(data["client"]),
-            UserBroker(data["broker"]),
-            Property(data["property"]),
-            datetime(data["rent_date"]),
-            datetime(data["devolution_date"]),
-            datetime(data["payment_date"]),
-            float(data["total_rent_amount"]),
-            Payment(data["payment_method"]),
-            list(data["insurance_hired"]),
-            bool(data["paid"])
-        )
-        prop.property_code = int(data["rent_code"])
-        loaded_rent_from_file.append(prop)
+        client_rental = find_user(data["client"], user_list)
+        if client_rental is not None and isinstance(client_rental, UserClient):
+            broker_rental = find_user(data["broker"], user_list)
+            if broker_rental is not None and isinstance(broker_rental, UserBroker):
+                property_rental = find_property(data["prop"], property_list)
+                if property_rental is not None:
+                    payment_rental = find_payment(data["payment_code"], payment_list)
+                    if payment_rental is not None:
+                        insurance_rental = find_insurance(data["insurance_code"], insurance_list)
+                        if  insurance_rental is not None:
+                            loaded_rent_from_file.append(
+                                RentMade(
+                                client_rental,
+                                broker_rental,
+                                property_rental,
+                                datetime(data["rent_date"]),
+                                datetime(data["devolution_date"]),
+                                datetime(data["payment_date"]),
+                                float(data["total_rent_amount"]),
+                                payment_rental,
+                                list(data["insurance_code"]),
+                                str2bool(data["paid"])
+                                )
+                            )
+                            loaded_rent_from_file[-1].rent_code = int(data["sale_code"])
+                            loaded_rent_from_file[-1].property.sale_made = True
+    print(f"GUI loop, ", loaded_rent_from_file, type(loaded_rent_from_file))
     return loaded_rent_from_file
 
 
@@ -583,24 +596,24 @@ def create_sale(user_list, property_list, payment_list) -> object:
 
     for i in user_list:
         if isinstance(i, UserClient):
-            client_dict[i.user_code] = i
+            client_dict[i.name] = i
         else:
-            broker_dict[i.user_code] = i
+            broker_dict[i.name] = i
 
     for i in property_list:
-        property_dict[i.property_code] = i
+        property_dict[i.address] = i
     for i in payment_list:
-        payment_dict[i.payment_code] = i
+        payment_dict[i.payment_type] = i
 
     print(payment_dict)
 
     layout = [
-        [sg.Text('Cliente:', pad=(5, 5), size=(20, 1)), sg.Combo(list(client_dict), size=(48, 1))],
-        [sg.Text('Corretor:', pad=(5, 5), size=(20, 1)), sg.Combo(list(broker_dict), size=(48, 1))],
-        [sg.Text('Imóvel:', pad=(5, 5), size=(20, 1)), sg.Combo(list(property_dict), size=(48, 1))],
-        [sg.Text('Data da Venda:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(48, 1))],
-        [sg.Text('Valor da Venda:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(48, 1))],
-        [sg.Text('Pagamento:', pad=(5, 5), size=(20, 1)), sg.Combo(list(payment_dict), size=(48, 1))],
+        [sg.Text('Cliente:', pad=(5, 5), size=(25, 1)), sg.Combo(list(client_dict), size=(48, 1))],
+        [sg.Text('Corretor:', pad=(5, 5), size=(25, 1)), sg.Combo(list(broker_dict), size=(48, 1))],
+        [sg.Text('Imóvel:', pad=(5, 5), size=(25, 1)), sg.Combo(list(property_dict), size=(48, 1))],
+        [sg.Text('Data da Venda:', pad=(5, 5), size=(25, 1)), sg.InputText(size=(48, 1))],
+        [sg.Text('Valor da Venda:', pad=(5, 5), size=(25, 1)), sg.InputText(size=(48, 1))],
+        [sg.Text('Pagamento:', pad=(5, 5), size=(25, 1)), sg.Combo(list(payment_dict), size=(48, 1))],
 
         [sg.Button('Criar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
     ]
@@ -614,10 +627,10 @@ def create_sale(user_list, property_list, payment_list) -> object:
             break
         if event == "Criar":
             print(values)
-            client_sale: object = client_dict[int(values[0])]
-            broker_sale: object = broker_dict[int(values[1])]
-            property_sale: object = property_dict[int(values[2])]
-            payment_sale: object = payment_dict[int(values[5])]
+            client_sale: object = client_dict[str(values[0])]
+            broker_sale: object = broker_dict[str(values[1])]
+            property_sale: object = property_dict[str(values[2])]
+            payment_sale: object = payment_dict[str(values[5])]
 
             sale = Sale(
                 client_sale,
@@ -635,38 +648,35 @@ def create_sale(user_list, property_list, payment_list) -> object:
 
 def create_rent(user_list, property_list, payment_list, insurance_list) -> object:
     rent: object = None
-
     client_dict: dict = {}
     broker_dict: dict = {}
     property_dict: dict = {}
     payment_dict: dict = {}
     insurance_dict: dict = {}
-
     for i in user_list:
         if isinstance(i, UserClient):
-            client_dict[i.user_code] = i
+            client_dict[i.name] = i
         else:
-            broker_dict[i.user_code] = i
-
+            broker_dict[i.name] = i
     for i in property_list:
-        property_dict[i.property_code] = i
+        property_dict[i.address] = i
     for i in payment_list:
-        payment_dict[i.payment_code] = i
+        payment_dict[i.payment_type] = i
     for i in insurance_list:
-        insurance_dict[i.insurance_code] = i
-
+        insurance_dict[i.insurance_name] = i
+    print(client_dict, broker_dict, property_dict, payment_dict, insurance_dict)
     layout = [
-        [sg.Text('Código do aluguel', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
-        [sg.Text('Cliente:', pad=(5, 5), size=(20, 1)), sg.Combo(list(client_dict), size=(48, 1))],
-        [sg.Text('Corretor:', pad=(5, 5), size=(20, 1)), sg.Combo(list(broker_dict), size=(48, 1))],
-        [sg.Text('Imóvel:', pad=(5, 5), size=(20, 1)), sg.Combo(list(property_dict), size=(48, 1))],
-        [sg.Text('Data de inicio', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
-        [sg.Text('Data de término', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
-        [sg.Text('Data de pagamento', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
-        [sg.Text('Valor total', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
-        [sg.Text('Pagamento:', pad=(5, 5), size=(20, 1)), sg.Combo(list(payment_dict), size=(48, 1))],
-        [sg.Text('Seguros contratados', pad=(5, 5), size=(20, 1)), sg.Combo(list(insurance_dict), size=(48, 1))],
-        [sg.Button('Criar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
+        [sg.Text('Código do aluguel', pad=(5, 5), size=(25, 1)), sg.InputText(size=(48, 1))],
+        [sg.Text('Cliente:', pad=(5, 5), size=(25, 1)), sg.Combo(list(client_dict), size=(48, 1))],
+        [sg.Text('Corretor:', pad=(5, 5), size=(25, 1)), sg.Combo(list(broker_dict), size=(48, 1))],
+        [sg.Text('Imóvel:', pad=(5, 5), size=(25, 1)), sg.Combo(list(property_dict), size=(48, 1))],
+        [sg.Text('Data de inicio', pad=(5, 5), size=(25, 1)), sg.InputText(size=(48, 1))],
+        [sg.Text('Data de término', pad=(5, 5), size=(25, 1)), sg.InputText(size=(48, 1))],
+        [sg.Text('Data de pagamento', pad=(5, 5), size=(25, 1)), sg.InputText(size=(48, 1))],
+        [sg.Text('Valor total', pad=(5, 5), size=(25, 1)), sg.InputText(size=(48, 1))],
+        [sg.Text('Pagamento:', pad=(5, 5), size=(25, 1)), sg.Combo(list(payment_dict), size=(48, 1))],
+        [sg.Text('Seguros contratados', pad=(5, 5), size=(25, 1)), sg.Combo(list(insurance_dict), size=(48, 1))],
+        [sg.Button('Criar', pad=(5, 5), size=(25, 1), button_color=('white', 'green4'))]
     ]
     window = sg.Window("Criar Aluguel", layout, element_justification='c', resizable=True, margins=(5, 5))
     while True:
@@ -677,20 +687,21 @@ def create_rent(user_list, property_list, payment_list, insurance_list) -> objec
         if event in ["Exit", sg.WIN_CLOSED]:
             break
         if event == "Criar":
-            client = object = client_dict[int(values[1])]
-            broker = object = broker_dict[int(values[2])]
-            property = object = property_dict[int(values[3])]
-            payment = object = payment_dict[int(values[8])]
-            insurance = object = insurance_dict[int(values[9])]
+            client: object = client_dict[str(values[1])]
+            broker: object = broker_dict[str(values[2])]
+            property: object = property_dict[str(values[3])]
+            payment: object = payment_dict[str(values[8])]
+            insurance: object = insurance_dict[str(values[9])]
+            print(values)
             rent = RentMade(
                 int(values[0]),
                 client,
                 broker,
                 property,
-                datetime(values[3]),
-                datetime(values[4]),
-                datetime(values[5]),
-                float(values[6]),
+                datetime.strptime(values[4], '%d/%m/%Y'),
+                datetime.strptime(values[5], '%d/%m/%Y'),
+                datetime.strptime(values[6], '%d/%m/%Y'),
+                float(values[7]),
                 payment,
                 insurance,
                 True

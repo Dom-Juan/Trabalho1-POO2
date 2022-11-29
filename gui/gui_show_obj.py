@@ -224,11 +224,7 @@ def show_users_broker(user_list: list) -> None:
     if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
       break
   window.close()
-
-
 # Mostrar Apartamentos
-
-
 # Mostra todas propriedades.
 def show_all_property(property_list):
   layout = []
@@ -418,12 +414,12 @@ def show_ap_property(property_list):
         Col.append(
           [
             sg.Text('Andar do ap:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(prop.floor), pad=(5, 5), size=(45, 1))
+            sg.Text(str(prop.apartment_value), pad=(5, 5), size=(45, 1))
           ]
         )
         Col.append(
           [
-            sg.Text('Valor do condomínio:', pad=(5, 5), size=(20, 1)),
+            sg.Text('Valor do ap:', pad=(5, 5), size=(20, 1)),
             sg.Text(str(prop.apartment_value), pad=(5, 5), size=(45, 1))
           ]
         )
@@ -456,7 +452,7 @@ def show_comercial_property(property_list):
         Col.append([sg.HSeparator()])
         Col.append([
           sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
-          sg.Text(str(prop.property_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+          sg.Text(str(prop.property_code), pad=(5, 5), size=(20, 1))  # Valor do obj.
         ])
         Col.append(
           [
@@ -503,7 +499,7 @@ def show_comercial_property(property_list):
         Col.append(
           [
             sg.Text('IPTU:', pad=(5, 5), size=(20, 1)),
-            sg.Text(str(prop.iptu), pad=(5, 5), size=(45, 1))
+            sg.Text(str(prop.iptu), pad=(5, 5), size=(20, 1))
           ]
         )
         Col.append(
@@ -528,7 +524,7 @@ def show_comercial_property(property_list):
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
   layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
-  window = sg.Window("Mostrando todos os Comércios", layout, element_justification='c', resizable=True, finalize=True,
+  window = sg.Window("Mostrando Todos Apartamentos", layout, element_justification='c', resizable=True, finalize=True,
                      modal=True)
   window.TKroot.minsize(320, 240)
   while True:
@@ -749,6 +745,135 @@ def show_all_property(property_list):
       break
   window.close()
 
+def show_all_property_rented(property_list):
+  layout = []
+  Col = []
+  if None in property_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for prop in property_list:
+    if prop is not None:
+      if prop.rental_made is not True:
+        # layout da página.
+        Col.append(
+          [
+            sg.Text('Imóvel:', pad=(5, 5), size=(20, 1)),
+          ]
+        )
+        Col.append([sg.HSeparator()])
+        Col.append([
+          sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
+          sg.Text(str(prop.property_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+        ])
+        Col.append(
+          [
+            sg.Text('Endereço: ', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.address), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Data de construção:', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.construction_date), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Área total:', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.total_area), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Área de construção:', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.constructed_area), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Num. de quartos:', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.num_rooms), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Num. de banheiros:', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.num_bathrooms), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Num. de vagas:', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.num_spots_garage), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('IPTU:', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.iptu), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Valor propriedade:', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.property_worth), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Valor de aluguel:', pad=(5, 5), size=(20, 1)),
+            sg.Text(str(prop.property_rent), pad=(5, 5), size=(45, 1))
+          ]
+        )
+        Col.append([sg.HSeparator()])
+        if isinstance(prop, ResidentialApartment):
+          Col.append(
+            [
+              sg.Text('Apartamento:', pad=(5, 5), size=(20, 1)),
+            ]
+          )
+          Col.append(
+            [
+              sg.Text('Andar do ap:', pad=(5, 5), size=(20, 1)),
+              sg.Text(str(prop.apartment_value), pad=(5, 5), size=(45, 1))
+            ]
+          )
+          Col.append(
+            [
+              sg.Text('Valor do ap:', pad=(5, 5), size=(20, 1)),
+              sg.Text(str(prop.apartment_value), pad=(5, 5), size=(45, 1))
+            ]
+          )
+        elif isinstance(prop, Comercial):
+          Col.append(
+            [
+              sg.Text('Comércio:', pad=(5, 5), size=(20, 1)),
+            ]
+          )
+          Col.append(
+            [
+              sg.Text('Imposto federal:', pad=(5, 5), size=(20, 1)),
+              sg.Text(str(prop.federal_tax), pad=(5, 5), size=(45, 1))
+            ]
+          )
+        Col.append(
+          [
+            sg.Text('Disponibilidade:', pad=(5, 5), size=(20, 1)),
+            sg.Text("Não disponível", pad=(5, 5), size=(45, 1))
+          ]
+        )
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Imóveis", layout, element_justification='c', resizable=True, finalize=True,
+                     modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
 def show_all_payment_methods(payment_list) -> object:
   payment: object = None
   layout = []
@@ -936,7 +1061,127 @@ def show_all_insurance(insurance_list: list):
       break
   window.close()
 
+# Mostrando os alugueis.
+def show_all_rentals(rental_list: list):
+  Col: list = []
+  for r in rental_list:
+    # layout da página.
+    Col.append([sg.HSeparator()])
+    Col.append([
+      sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.rent_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Cliente:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.client.name), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Corretor:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.broker.name), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Imóvel:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.prop.address), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Data do aluguel:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.rent_date), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Data da devolução', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.devolution_date), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Data do pagamento:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.payment_date), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Preço do aluguel:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.total_rent_amount), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Forma de pagamento:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.payment_method.payment_type), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Seguro contratado:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.insurance_hired.insurance_name), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([
+      sg.Text('Status:', pad=(5, 5), size=(20, 1)),  # Label
+      sg.Text(str(r.paid), pad=(5, 5), size=(45, 1))  # Valor do obj.
+    ])
+    Col.append([sg.HSeparator()])
+    # Inicialização da interface.
+    layout = []
+    layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+    layout.append(
+      [sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+    layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+    window = sg.Window("Mostrando todos alugueis realizados", layout, element_justification='c', resizable=True,
+                       finalize=True,
+                       modal=True)
+    window.TKroot.minsize(320, 240)
+    while True:
+      event, values = window.read(close=True)
+      if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+        break
+    window.close()
+
 # Monstrando as vendas.
+def show_all_sales(obj_list: list):
+  Col: list = []
+  for o in obj_list:
+    if o is not None:
+      o.print_info()
+      # layout da página.
+      Col.append([sg.HSeparator()])
+      Col.append([
+        sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(o.sale_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Cliente:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(o.client.name), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Corretor:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(o.broker.name), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Imóvel:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(o.sale_property.address), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Data da venda:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(o.sale_date), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Preço da venda:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(o.total_sale_value), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Forma de pagamento:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(o.payment_method.payment_type), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+    Col.append([sg.HSeparator()])
+  # Inicialização da interface.
+  layout = []
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando todas as vendas e lucro total", layout, element_justification='c', resizable=True,
+                     finalize=True,
+                     modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+# Mostrando vendas e o lucro da imobiliária.
 def show_all_sales_and_profit(obj_list: list):
   profits: float = 0.0
   Col: list = []
@@ -996,6 +1241,7 @@ def show_all_sales_and_profit(obj_list: list):
       break
   window.close()
 
+# Mostrando propriedades vendidas.
 def show_properties_sales(obj_list: list):
   profits: float = 0.0
   Col: list = []
@@ -1049,6 +1295,7 @@ def show_properties_sales(obj_list: list):
       break
   window.close()
 
+# Mostrando propriedades não vendidas.
 def show_properties_not_sold(obj_list: list):
   profits: float = 0.0
   Col: list = []
@@ -1179,7 +1426,7 @@ def show_all_sales_and_profit_month_only(obj_list: list, date: str) -> True:
   Col: list = []
   for o in obj_list:
     if o is not None:
-      if o.sale_date[3:] == date:
+      if o.sale_date == date:
         o.print_info()
         # layout da página.
         Col.append([sg.HSeparator()])
@@ -1237,7 +1484,7 @@ def show_all_sales_and_profit_month_only(obj_list: list, date: str) -> True:
 
 def show_all_sales_and_profit_month(obj_list) -> object:
   layout = [
-    [sg.Text('Digite um mês válido (mm/aaaa):', pad=(5, 5), size=(30, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Digite uma data válida:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
     [sg.Button('Mostrar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
   ]
   window = sg.Window("Mostrar vendas e lucro em data", layout, element_justification='c', resizable=True, margins=(5, 5))
@@ -1254,6 +1501,7 @@ def show_all_sales_and_profit_month(obj_list) -> object:
         break
   window.close()
 
+# Lista as vendas por 1 cliente.
 def show_all_sales_by_client(sales_list: list, name:str):
   Col: list = []
   for s in sales_list:
@@ -1296,7 +1544,7 @@ def show_all_sales_by_client(sales_list: list, name:str):
   layout.append(
     [sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
-  window = sg.Window("Mostrando todas as vendas e lucro total", layout, element_justification='c', resizable=True,
+  window = sg.Window("Mostrando todas vendas pelo cliente digitado", layout, element_justification='c', resizable=True,
                      finalize=True,
                      modal=True)
   window.TKroot.minsize(320, 240)
@@ -1305,30 +1553,13 @@ def show_all_sales_by_client(sales_list: list, name:str):
     if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
       break
   window.close()
-def show_properties_sold_to_client(sales_list: list):
-  layout = [
-    [sg.Text('Digite nome de um cliente:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
-    [sg.Button('Mostrar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
-  ]
-  window = sg.Window("Mostrar vendas de um cliente", layout, element_justification='c', resizable=True,
-                     margins=(5, 5))
-  while True:
-    event, values = window.read(close=True)
-    if values is not None:
-      if '' in values:
-        result_window('Algum campo está vazio, tente novamente.')
-        break
-      if event in ["Exit", sg.WIN_CLOSED]:
-        break
-      if event == "Mostrar":
-        show_all_sales_by_client(sales_list, str(values[0]))
-        break
-  window.close()
 
-def show_late_rent(rent_list: list) -> object:
+# Lista os alugueis por 1 cliente.
+def show_all_rented_by_client(rental_list: list, name:str):
   Col: list = []
-  for r in rent_list:
-    if r.is_late():
+  for r in rental_list:
+    if r.client.name == name:
+      # layout da página.
       Col.append([sg.HSeparator()])
       Col.append([
         sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
@@ -1347,38 +1578,42 @@ def show_late_rent(rent_list: list) -> object:
         sg.Text(str(r.prop.address), pad=(5, 5), size=(45, 1))  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Data início da locação:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text('Data do aluguel:', pad=(5, 5), size=(20, 1)),  # Label
         sg.Text(str(r.rent_date), pad=(5, 5), size=(45, 1))  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Data para devolução:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text('Data da devolução', pad=(5, 5), size=(20, 1)),  # Label
         sg.Text(str(r.devolution_date), pad=(5, 5), size=(45, 1))  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Data de pagamento:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text('Data do pagamento:', pad=(5, 5), size=(20, 1)),  # Label
         sg.Text(str(r.payment_date), pad=(5, 5), size=(45, 1))  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Valor do aluguel:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text('Preço do aluguel:', pad=(5, 5), size=(20, 1)),  # Label
         sg.Text(str(r.total_rent_amount), pad=(5, 5), size=(45, 1))  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Pagamento:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text('Forma de pagamento:', pad=(5, 5), size=(20, 1)),  # Label
         sg.Text(str(r.payment_method.payment_type), pad=(5, 5), size=(45, 1))  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Quantidade de seguros:', pad=(5, 5), size=(20, 1)),  # Label
-        sg.Text(str(len(r.insurance_hired)), pad=(5, 5), size=(45, 1))  # Valor do obj.
+        sg.Text('Seguro contratado:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(r.insurance_hired.insurance_name), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Status:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(r.paid), pad=(5, 5), size=(45, 1))  # Valor do obj.
       ])
     Col.append([sg.HSeparator()])
-    
   # Inicialização da interface.
   layout = []
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
   layout.append(
     [sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
-  window = sg.Window("Mostrando os aluguéis atrasados", layout, element_justification='c', resizable=True, finalize=True,
+  window = sg.Window("Mostrando todos alugueis pelo cliente digitado", layout, element_justification='c', resizable=True,
+                     finalize=True,
                      modal=True)
   window.TKroot.minsize(320, 240)
   while True:
@@ -1387,50 +1622,14 @@ def show_late_rent(rent_list: list) -> object:
       break
   window.close()
 
-def show_best_broker_by_month(rent_list: list, sale_list: list, date: str):
-  brokers: dict = {}
-  for r in rent_list:
-    if r.rent_date[3:] == date:
-      if r.broker.name not in brokers:
-        brokers[r.broker.name] = r.calc_total_amount()
-      else:
-        brokers[r.broker.name] += r.calc_total_amount()
-  for s in sale_list:
-    if s.sale_date[3:] == date:
-      if s.broker.name not in brokers:
-        brokers[s.broker.name] = s.total_sale_value
-      else:
-        brokers[s.broker.name] += s.total_sale_value
-  broker_rank = sorted(brokers.items(), key=lambda x: x[1], reverse=True)
-  month_broker = broker_rank[0][0]
-  Col: list = []
-  Col.append([sg.HSeparator()])
-  Col.append([
-        sg.Text('Funcionário do mês:', pad=(5, 5), size=(20, 1)),  # Label
-        sg.Text(str(month_broker), pad=(5, 5), size=(45, 1))  # Valor do obj.
-      ])
-  Col.append([sg.HSeparator()])
-  # Inicialização da interface.
-  layout = []
-  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append(
-    [sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
-  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
-  window = sg.Window("Mostrando o funcionário do mês", layout, element_justification='c', resizable=True, finalize=True,
-                     modal=True)
-  window.TKroot.minsize(320, 240)
-  while True:
-    event, values = window.read(close=True)
-    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
-      break
-  window.close()
-
-def show_best_broker_by_month_prompt(rent_list: list, sale_list: list) -> object:
+# Pop up do aluguel
+def show_properties_rented_to_client(rental_list: list):
   layout = [
-    [sg.Text('Digite um mês válido (mm/aaaa):', pad=(5, 5), size=(30, 1)), sg.InputText(size=(32, 1))],
+    [sg.Text('Digite nome de um cliente:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
     [sg.Button('Mostrar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
   ]
-  window = sg.Window("Mostrar vendas e lucro em data", layout, element_justification='c', resizable=True, margins=(5, 5))
+  window = sg.Window("Mostrar alugueis de um cliente", layout, element_justification='c', resizable=True,
+                     margins=(5, 5))
   while True:
     event, values = window.read(close=True)
     if values is not None:
@@ -1440,7 +1639,28 @@ def show_best_broker_by_month_prompt(rent_list: list, sale_list: list) -> object
       if event in ["Exit", sg.WIN_CLOSED]:
         break
       if event == "Mostrar":
-        show_best_broker_by_month(rent_list, sale_list, str(values[0]))
+        show_all_rented_by_client(rental_list, str(values[0]))
+        break
+  window.close()
+
+# Pop up da venda.
+def show_properties_sold_to_client(sales_list: list):
+  layout = [
+    [sg.Text('Digite nome de um cliente:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1))],
+    [sg.Button('Mostrar', pad=(5, 5), size=(21, 1), button_color=('white', 'green4'))]
+  ]
+  window = sg.Window("Mostrar vendas de um cliente", layout, element_justification='c', resizable=True,
+                     margins=(5, 5))
+  while True:
+    event, values = window.read(close=True)
+    if values is not None:
+      if '' in values:
+        result_window('Algum campo está vazio, tente novamente.')
+        break
+      if event in ["Exit", sg.WIN_CLOSED]:
+        break
+      if event == "Mostrar":
+        show_all_sales_by_client(sales_list, str(values[0]))
         break
   window.close()
 

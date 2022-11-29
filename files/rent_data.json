@@ -1,5 +1,15 @@
 [
     {
-        "rent_code": "0"
+        "rent_code": 1,
+        "client": 7093,
+        "broker": 7901,
+        "prop": 5914,
+        "rent_date": "28/11/2022",
+        "devolution_date": "28/11/2023",
+        "payment_date": "28/11/2022",
+        "total_rent_amount": 25000.0,
+        "payment_code": 123123123123123123123123123123123123123,
+        "insurance_code": 173625952301273368496643265342871132730,
+        "paid": true
     }
 ]

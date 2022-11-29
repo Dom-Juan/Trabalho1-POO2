@@ -7,9 +7,6 @@ from os import path
 from datetime import datetime
 from datetime import timedelta
 from classes.money.payment import Payment
-from classes.property.property import Property
-from classes.user.user_broker import UserBroker
-from classes.user.user_client import UserClient
 
 sys.path.append('../')
 sys.path.append('../')
@@ -18,8 +15,8 @@ sys.path.append('../')
 class RentMade:
 
     def __init__(self, rent_code: int, client: object, broker: object, prop: object, rent_date: datetime,
-                 devolution_date: datetime, payment_date: datetime, total_rent_amount: float, payment_method: Payment,
-                 insurance_hired: list, paid: bool):
+                 devolution_date: datetime, payment_date: datetime, total_rent_amount: float, payment_method: object,
+                 insurance_hired: object, paid: bool):
         self._rent_code: int = rent_code
         self._client: object = client
         self._broker: object = broker
@@ -29,7 +26,7 @@ class RentMade:
         self._payment_date: datetime = payment_date
         self._total_rent_amount: float = total_rent_amount
         self._payment_method: object = payment_method
-        self._insurance_hired: list = insurance_hired
+        self._insurance_hired: object = insurance_hired
         self._paid: bool = paid
         self._layout = []
 
@@ -168,17 +165,17 @@ class RentMade:
                 listObj.remove(item)
         print(type(listObj))
         listObj.append({
-            "_rent_code": self._rent_code,
-            "_client": self._client,
-            "_broker": self._broker,
-            "_prop": self._prop,
-            "_rent_date": self._rent_date,
-            "_devolution_date": self._devolution_date,
-            "_payment_date": self._payment_date,
-            "_total_rent_amount": self._total_rent_amount,
-            "_payment_method": self._payment_method,
-            "_insurance_hired": self._insurance_hired,
-            "paid": self._paid
+            "rent_code": self._rent_code,
+            "client": self.client.user_code,
+            "broker": self.broker.user_code,
+            "prop": self.prop.property_code,
+            "rent_date": self.rent_date.strftime('%d/%m/%Y'),
+            "devolution_date": self.devolution_date.strftime('%d/%m/%Y'),
+            "payment_date": self.payment_date.strftime('%d/%m/%Y'),
+            "total_rent_amount": self.total_rent_amount,
+            "payment_code": self.payment_method.payment_code,
+            "insurance_code": self.insurance_hired.insurance_code,
+            "paid": self.paid
         })
         print(listObj)
         with open(filename, 'w', encoding='utf-8') as json_file:

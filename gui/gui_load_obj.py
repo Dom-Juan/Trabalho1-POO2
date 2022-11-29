@@ -157,7 +157,7 @@ def load_file_gui_sales(user_list, property_list, payment_list):
                     result_window('Erro no processo de carregar arquivo.')
 
 
-def load_file_gui_rent():
+def load_file_gui_rent(user_list: list, property_list: list, payment_list: list, insurance_list: list):
     layout = [
         [
             sg.Input(key='-INPUT-'),
@@ -173,11 +173,11 @@ def load_file_gui_rent():
         elif event == 'Abrir':
             filename = values['-INPUT-']
             if Path(filename).is_file():
-                try:
+                #try:
                     with open(filename, encoding='utf-8') as fp:
                         listObj = json.load(fp)
                         print(listObj)
-                        return create_rent_from_file(listObj)
-                except Exception as e:
-                    result_window('Erro no processo de carregar arquivo.')
+                        return create_rent_from_file(listObj, user_list, property_list, payment_list, insurance_list)
+                #except Exception as e:
+                    #result_window('Erro no processo de carregar arquivo.')
 # FIM Lógica de carregar arquivos
